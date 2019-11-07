@@ -10,7 +10,21 @@ function calcularIMCProgram(){
     
     // mostrar resultado
     document.getElementById("resultadoIMC").innerHTML = "su indice IMC es " + IMC + " equivalente a " + text;
-    document.getElementById("foto").src = devolverIMCFoto(IMC);
+    
+    //mostrar imagen 
+
+    var imgDiv = document.getElementById("div_imagen");
+    
+    if(imgDiv.childElementCount === 1){
+        imgDiv.
+    }
+
+    var img = document.createElement("img");    //creo una elemento imagen
+    img.src = devolverIMCFoto(IMC);             //le añado el link de la foto
+    
+    // imgDiv.removeChild(img);                    // eliminar imagen si esta creada
+    imgDiv.appendChild(img);                    // añadir imagen como hijo del div
+    
 }
 
 function calcularIMC(pesoKg,alturaM){
