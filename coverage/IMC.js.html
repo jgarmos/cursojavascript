@@ -20,14 +20,14 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">36.36% </span>
+        <span class="strong">34.29% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>12/33</span>
+        <span class='fraction'>12/35</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">43.75% </span>
+        <span class="strong">41.18% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>14/32</span>
+        <span class='fraction'>14/34</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">50% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>2/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">36.36% </span>
+        <span class="strong">34.29% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>12/33</span>
+        <span class='fraction'>12/35</span>
       </div>
     </div>
     <p class="quiet">
@@ -111,7 +111,20 @@
 <a name='L63'></a><a href='#L63'>63</a>
 <a name='L64'></a><a href='#L64'>64</a>
 <a name='L65'></a><a href='#L65'>65</a>
-<a name='L66'></a><a href='#L66'>66</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -119,19 +132,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -177,6 +193,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">&nbsp;
+var img;
 function <span class="fstat-no" title="function not covered" >calcularIMCProgram(</span>){
     // extraer datos
     var altura = <span class="cstat-no" title="statement not covered" >parseFloat(document.getElementById("altura").value);</span>
@@ -193,10 +210,17 @@ function <span class="fstat-no" title="function not covered" >calcularIMCProgram
 &nbsp;
     var imgDiv = <span class="cstat-no" title="statement not covered" >document.getElementById("div_imagen");</span>
     
-    var img = <span class="cstat-no" title="statement not covered" >document.createElement("img");</span>    //creo una elemento imagen
-<span class="cstat-no" title="statement not covered" >    img.src = devolverIMCFoto(IMC); </span>            //le añado el link de la foto
-    // imgDiv.removeChild(img);                    // eliminar imagen si esta creada
-<span class="cstat-no" title="statement not covered" >    imgDiv.appendChild(img); </span>                   // añadir imagen como hijo del div
+    
+<span class="cstat-no" title="statement not covered" >    if (imgDiv.childElementCount === 1){</span>
+        
+<span class="cstat-no" title="statement not covered" >        img.src = devolverIMCFoto(IMC); </span>            //le añado el link de la foto
+&nbsp;
+    }else{
+<span class="cstat-no" title="statement not covered" >        img = document.createElement("img"); </span>   //creo una elemento imagen
+<span class="cstat-no" title="statement not covered" >        img.appendChild(img);</span>
+<span class="cstat-no" title="statement not covered" >        img.src = devolverIMCFoto(IMC); </span>            //le añado el link de la foto
+    }
+&nbsp;
     
 }
 &nbsp;
@@ -247,7 +271,7 @@ module.exports = {calcularIMC,devolverIMCdescriptivo};
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Nov 07 2019 13:20:33 GMT+0100 (GMT+01:00)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Nov 07 2019 13:53:54 GMT+0100 (GMT+01:00)
 </div>
 </div>
 <script src="prettify.js"></script>

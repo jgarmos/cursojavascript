@@ -1,4 +1,5 @@
 
+var img;
 function calcularIMCProgram(){
     // extraer datos
     var altura = parseFloat(document.getElementById("altura").value);
@@ -15,15 +16,17 @@ function calcularIMCProgram(){
 
     var imgDiv = document.getElementById("div_imagen");
     
-    if(imgDiv.childElementCount === 1){
-        imgDiv.
+    
+    if (imgDiv.childElementCount === 1){
+        
+        img.src = devolverIMCFoto(IMC);             //le añado el link de la foto
+
+    }else{
+        img = document.createElement("img");    //creo una elemento imagen
+        img.appendChild(img);
+        img.src = devolverIMCFoto(IMC);             //le añado el link de la foto
     }
 
-    var img = document.createElement("img");    //creo una elemento imagen
-    img.src = devolverIMCFoto(IMC);             //le añado el link de la foto
-    
-    // imgDiv.removeChild(img);                    // eliminar imagen si esta creada
-    imgDiv.appendChild(img);                    // añadir imagen como hijo del div
     
 }
 
