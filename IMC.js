@@ -1,5 +1,6 @@
 
 var img;
+var contadorCalcularIMC = 0;
 function calcularIMCProgram(){
     // extraer datos
     var altura = parseFloat(document.getElementById("altura").value);
@@ -8,7 +9,8 @@ function calcularIMCProgram(){
     // calcular IMC
     var IMC = calcularIMC(peso,altura);
     var text = devolverIMCdescriptivo(IMC);
-    
+    contadorCalcularIMC++; 
+
     // mostrar resultado
     document.getElementById("resultadoIMC").innerHTML = "su indice IMC es " + IMC + " equivalente a " + text;
     
@@ -23,9 +25,11 @@ function calcularIMCProgram(){
 
     }else{
         img = document.createElement("img");    //creo una elemento imagen
-        img.appendChild(img);
+        imgDiv.appendChild(img);
         img.src = devolverIMCFoto(IMC);             //le añado el link de la foto
     }
+
+    document.getElementById("contador").innerHTML = contadorCalcularIMC;
 
     
 }
