@@ -1,153 +1,173 @@
-<html>
+<<html>
 
-<head>
-    <title>
-        WEB CON JS
-    </title>
-    <link rel="stylesheet" type="text/css" href="estilo2.css">
-
-    <script src="easytimer.js"></script>
-
-    <script language="javascript">
-        window.onload = iniciarTablero;
-        
-        var lista_td;
-        var clickCounter = 0;
-        var primeraImagen;
-        var segundaImagen;
-        var acertadasCounter = 0;
-        var timer = new easytimer.Timer();
-
-
-
-
-        function iniciarTablero() {
-            console.log("Inicia Tablero . . .");
-        
-            var td_actual;
-            var hijo_img;
-            var tamañoLado = 4; //todo: recojer de select
-            var tabla = document.getElementById("tabla");
-        
-            var contadorImagen1 = 8;
-            var contadorImagen2 = 8;
-            
-            //generar filas y columans
-            for(var i = 0; i < tamañoLado; i++ ){
-                var fila = document.createElement("tr");
-                tabla.appendChild(fila);
-                
-                for(var j = 0; j < tamañoLado; j++ ){
-                    var columna = document.createElement("td");
-                    columna.addEventListener('click', tocadoImagen);
-                    fila.appendChild(columna);
-                    var img = document.createElement("img");
-                    
-                    //asignar imagen random
-                    var rand = Boolean(Math.round(Math.random()));
-
-
-
-                    if (rand && contadorImagen1 > 0){
-                        img.src = "delgado.jpg"; 
-                        contadorImagen1--;
-                    }
-                    else if (contadorImagen2 > 0){
-                        img.src = "pantera.jpg"; 
-                        contadorImagen2--;
-                    }
-                    
-                    img.style.visibility = 'hidden';
-                    
-
-                    columna.appendChild(img);
+    <head>
+        <title>
+            WEB CON JS
+        </title>
+        <link rel="stylesheet" type="text/css" href="estilo2.css">
+    
+        <script src="easytimer.js"></script>
+    
+        <script language="javascript">
+            window.onload = iniciarTablero;
+    
+            var lista_td;
+            var clickCounter = 0;
+            var primeraImagen;
+            var segundaImagen;
+            var acertadasCounter = 0;
+            var timer = new easytimer.Timer();
+            var tamañoLado;
+            var elementosSeleccionados = [];
+    
+    
+            function iniciarTablero() {
+                console.log("Inicia Tablero . . .");
+    
+                var td_actual;
+                var hijo_img;
+                var tabla = document.getElementById("tabla");
+                tamañoLado = document.getElementById("selectorTamano").value;
+                var contadorImagen1 = tamañoLado * tamañoLado / 2;
+                var contadorImagen2 = tamañoLado * tamañoLado / 2;
+    
+                //limpiar filas y columnas si ya existian
+    
+                while (tabla.hasChildNodes()) {
+                    tabla.removeChild(tabla.firstChild);
                 }
+    
+                //generar filas y columans
+                for (var i = 0; i < tamañoLado; i++) {
+                    var fila = document.createElement("tr");
+                    tabla.appendChild(fila);
+    
+                    for (var j = 0; j < tamañoLado; j++) {
+                        var columna = document.createElement("td");
+                        //le doy un id a cada elemento de la tabla
+                        var id = i + "," + j;
+                        columna.setAttribute("id", id)
+                        columna.addEventListener('click', tocadoImagen);
+                        fila.appendChild(columna);
+                        var img = document.createElement("img");
+    
+                        //asignar imagen random
+                        var rand = Boolean(Math.round(Math.random()));
+    
+                        if (contadorImagen1 > 0 && contadorImagen2 > 0){
+                            if (rand){
+                                img.src = "delgado.jpg";
+                                contadorImagen1--; 
+                            }else{
+                                img.src = "pantera.jpg";
+                                contadorImagen2--;
+                            }
+                        }
+                        else if(contadorImagen1 > 0 && contadorImagen2 === 0){
+                            img.src = "delgado.jpg";
+                            contadorImagen1--; 
+                        }else if (contadorImagen2 > 0 && contadorImagen1 === 0){
+                            img.src = "pantera.jpg";
+                            contadorImagen2--;
+                        }
+    
+    
+                        // if (rand && contadorImagen1 > 0) {
+                        //     img.src = "delgado.jpg";
+                        //     contadorImagen1--;
+                        // } else if (contadorImagen2 > 0) {
+                        //     img.src = "pantera.jpg";
+                        //     contadorImagen2--;
+                        // }
+    
+                        img.style.visibility = 'hidden';
+    
+    
+                        columna.appendChild(img);
+                    }
+                }
+    
+                console.log("Fin Inicia Tablero . . .");
+    
+                // timer.start();
+                // timer.addEventListener('secondsUpdated', function (e) {
+                //     $('#basicUsage').html(timer.getTimeValues().toString());
+                // });
+    
             }
-
-            
-
-
-            // lista_td = document.querySelectorAll("td");
-            
-
-            
-            // for (var i = 0; i < lista_td.length; i++) {
-            //     td_actual = lista_td[i];
-            //     td_actual.addEventListener('click', tocadoImagen);
-            //     hijo_img = td_actual.firstElementChild;
-            //     hijo_img.style.visibility = 'hidden';
-            // }
-            console.log("Fin Inicia Tablero . . .");
-            
-            // timer.start();
-            // timer.addEventListener('secondsUpdated', function (e) {
-            //     $('#basicUsage').html(timer.getTimeValues().toString());
-            // });
-        
-        }
-
-        function tocadoImagen() {
-
-            console.log("El usuario tocó el td ");
-            console.log("THIS " + this);
-            var imagen = this.firstElementChild;
-            
-            if (clickCounter === 0 ){ //primera tirada
-                primeraImagen = imagen;
-                primeraImagen.style.visibility = 'visible';                              
-                clickCounter++;               
-            }else if (clickCounter === 1 ){ // segunda tirada
-                segundaImagen = imagen;
-                segundaImagen.style.visibility = 'visible';
-                if (primeraImagen.src !== segundaImagen.src){ // si no son las mismas imagenes hay que ocultar las dos imagenes de nuevo
-                    setTimeout(hacerInvisible,1000);
-                
-                }else{
-                    acertadasCounter++;
-                    if(acertadasCounter === 2){
-                        var h1 = document.createElement("H1").innerHTML = "YOU WINNER!!!"
-                        document.appendChild(h1);
-                    }
+    
+            function tocadoImagen() {
+                //si la casilla ya esta marcada no quiero continuar
+                if (elementosSeleccionados.includes(this.id)) {
+                    return;
                 }
-                clickCounter = 0;
-            }          
-
-        }
-        function hacerInvisible(){
-            primeraImagen.style.visibility = 'hidden';
-            segundaImagen.style.visibility = 'hidden';
-        }
-    </script>
-</head>
-
-<body>
-    <label>selecccione tamaño de la caja</label>
-    <select name="select">
-            <option value="value1">2x2</option> 
-            <option value="value2">4X4</option>
-            <option value="value3">6X6</option>
-            <option value="value3">8x8</option>
-            <option value="value3">10x10</option>
-    </select>
-    <table id="tabla">
-       <!-- <tr>
-            <td>
-                <img src="delgado.jpg">
-            </td>
-            <td>
-                <img src="pantera.jpg">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img src="delgado.jpg">
-            </td>
-            <td>
-                <img src="pantera.jpg">
-            </td>
-        </tr> -->
-    </table>
-    <div id="basicUsage">00:00:00</div>
-</body>
-
-</html>
+    
+                console.log("El usuario tocó el td ");
+                console.log("THIS " + this);
+                var imagen = this.firstElementChild;
+    
+                if (clickCounter === 0) { //primera tirada
+                    primeraImagen = imagen;
+                    primeraImagen.style.visibility = 'visible';
+                    clickCounter++;
+                } else if (clickCounter === 1) { // segunda tirada
+                    segundaImagen = imagen;
+                    segundaImagen.style.visibility = 'visible';
+                    if (primeraImagen.src !== segundaImagen
+                        .src) { // si no son las mismas imagenes hay que ocultar las dos imagenes de nuevo
+                        setTimeout(hacerInvisible, 500);
+    
+                    } else {
+                        acertadasCounter++;
+                        if (acertadasCounter === tamañoLado * tamañoLado / 2) {
+                            alert("YOU WINNER!!!")
+                        }
+                    }
+                    clickCounter = 0;
+                }
+    
+            }
+    
+            function hacerInvisible() {
+                primeraImagen.style.visibility = 'hidden';
+                segundaImagen.style.visibility = 'hidden';
+            }
+        </script>
+    </head>
+    
+    <body>
+        <label>selecccione tamaño de la caja</label>
+        <select name="select" id="selectorTamano" onchange="iniciarTablero()">
+            <option value="2">2x2</option>
+            <option value="4" selected="selected">4X4</option>
+            <option value="6">6X6</option>
+            <option value="8">8x8</option>
+            <option value="10">10x10</option>
+        </select>
+    
+        <div>
+            <label>Tiempo transcurrido</label>
+            <div id="basicUsage">00:00:00</div>
+        </div>
+        <table id="tabla">
+            <!-- <tr>
+                <td>
+                    <img src="delgado.jpg">
+                </td>
+                <td>
+                    <img src="pantera.jpg">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img src="delgado.jpg">
+                </td>
+                <td>
+                    <img src="pantera.jpg">
+                </td>
+            </tr> -->
+        </table>
+    
+    </body>
+    
+    </html>

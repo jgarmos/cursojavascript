@@ -35,4 +35,25 @@ function esMayorDeEdad(edad){
 }
 
 
+//***************************** Ejercicio 3 *******************
+fucntion calcularNota(not) {
+  var nota = Math.round(not);
+  var texto;
+  if (nota < 5){
+    texto = "Suspenso";
+  } else if( nota >= 5 && nota < 6 ){
+    texto = "Aprobado";
+  } else if( nota >= 6 && nota < 7 ){
+    texto = "Bien";
+  } else if( nota >= 8 && nota < 9 ){
+    texto = "Notable";
+  } else if( nota >= 9 && nota <=10 ){
+    texto = "Sobresaliente";
+  return texto;
+}
+
+
+
+//*****************************Ejercicio 4 **********************/
+
 module.exports = {esPar,esMayorDeEdad};

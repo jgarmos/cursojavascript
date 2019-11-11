@@ -25,3 +25,18 @@ test('funcion esMayorDeEdad devuelve false para edades menores de 18 anos', () =
   expect(esMayorDeEdad(17)).toBe(false);
   expect(esMayorDeEdad(5)).toBe(false);
 });
+
+
+// test('funcion claclularNota devuelve devuelve el la nota en texto', () =>{
+//   expect(claclularNota(4)).toBe("Suspenso");
+//   expect(claclularNota(5.5)).toBe("Aprobado");
+//   expect(claclularNota(6.2)).toBe("Bien");
+//   expect(claclularNota(8)).toBe("Notable");
+//   expect(claclularNota(9.5)).toBe("Sobresaliente");
+// });
+
+
+
+
+
+
