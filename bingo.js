@@ -72,6 +72,15 @@ function bingo() {
     esLineaGanada();
 
 }
+function sacarBola(){
+    // dibujar gif bombo
+    // obtener numero aleatorio
+    // ocultar dibujo y muestro el numero
+    // guardo numero para controlar repetidos en listaBolasExtraidas 
+    //si esta marco mi numero
+    // calcular bingo y linea
+
+}
 function rellenarCarton(numerosAleatorios) {
 
     var numerosAleatoriosIndex = 0;
