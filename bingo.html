@@ -15,6 +15,20 @@
         body {
             background-color: bisque;
         }
+        #bola{
+            font-size:50px;
+            display:block;
+            margin: 20px auto;
+            width: 5rem;
+            line-height: 5rem;
+            border-radius: 50%;
+            background-color: #000;
+            color: #FFF;
+            text-align:center;
+        }
+        .marcado{
+            color: red;
+        }
 
     </style>
 
@@ -34,11 +48,22 @@
 
 <body>
 
-
-    <table id="tabla">
+    <div id="juegoContainer">
+        <table id="tabla">
         
-    </table>
-    <button type="button" onclick="bingo()">Generar Carton </button>
+        </table>
+
+        <button type="button" onclick="bingo()">Generar Carton </button>
+        <button type="button" onclick="sacarBola()">Sacar Bola   </button>
+
+        <div id="bola" ></div>
+    </div>
+    
+    
+
+    <!-- <button type="button" onclick=>Generar Carton </button> -->
+
+    
 </body>
 
 </html>
