@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        td {
+            width: 80px;
+            height: 80px;
+            cursor: pointer;
+            border: 2px solid blue;
+            background-color: lightgray;
+            align-items: center;
+            font-size: 50px;
+
+        }
+        div.opinion{
+            border-style: solid;
+        }
+
+        body {
+            background-color: bisque;
+        }
+    </style>
+    <script>
+
+        var placesObject;
+        var xmlHttp;
+        onload = cargarInfoSitio;
+        var divOpiniones;
+
+        //1 Obtener API propia https://developers.google.com/places/web-service/get-api-key
+        //2 Elegir un lugar ID_LUGAR https://developers.google.com/places/web-service/place-id
+        //2 Instalar FIREFOX
+        //3 Instalar extensión CORS Everywhere para ese navegador
+        //4 Activar extensión
+
+        const ID_LUGAR = "ChIJeayYR7K5h0gRd1Ozb1rNBuA"; // id camera obscura
+        const CLAVE_API_GOOGLE_PLACES = "AIzaSyBsQYkFS67KMnuQ8gRyHqEQYfczh6OX3v0"//"AIzaSyAC8c2uqJTnar_0mSr-pmCLH4InQSbflJw" //api key generada
+
+        const URI = "https://maps.googleapis.com/maps/api/place/details/json?placeid=" + ID_LUGAR + "&key=" + CLAVE_API_GOOGLE_PLACES;
+
+        function cargarInfoSitio() {
+            xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = procesarEventosRecibir;
+            xmlHttp.open('GET', URI, true);
+            xmlHttp.send(null);
+
+        }
+
+        function procesarEventosRecibir() {
+            if (xmlHttp.readyState == 4) {
+                if (xmlHttp.status == 200) {
+                    var cuerpo = xmlHttp.responseText;
+                    var objeto_js = JSON.parse(cuerpo);
+                    placesObject = objeto_js.result;
+                    console.log("OPINIONES " + objeto_js.result.reviews);
+                    console.log("NOMBRE AUTOR " + objeto_js.result.reviews[1].author_name);
+                    mostrarDatos();
+                } else {
+                    console.log("error " + xmlHttp.status);
+                }
+            }
+        }
+        function mostrarDatos() {
+            //mostrar nombre del sition
+            document.getElementById("nameLugar").innerHTML = placesObject.name;
+
+            //mostrar direccion completa
+            document.getElementById("address").innerHTML = placesObject.formatted_address;
+
+            // //mostrar foto
+            // var fotosObject;
+            // fotosObject = placesObject.photos;
+            // var tablaFotos = document.getElementById("fotos");
+
+            // for (let i = 0; i < 2; i++) {
+            //     var fila = document.createElement("tr");
+
+            //     tablaFotos.appendChild(fila);
+
+            //     for (var j = 0; j < 5; j++) {
+            //         var columna = document.createElement("td");
+            //         //var fotoLink = fotosObject.html_attributions[0];
+            //         //columna.appendChild()
+            //         fila.appendChild(columna);
+                    
+            //     }
+
+            // }
+
+            //mostrar opiniones
+            var reviews = placesObject.reviews;            
+            
+            for (let i = 0; i < reviews.length; i++) {
+                var review = reviews[i];
+                mostrarOpinion(review,i);
+                
+
+                
+                console.log(review.author_name);
+                console.log(review.profile_photo_url);
+                console.log(review.rating);
+                console.log(review.relative_time_description);
+                console.log(review.text);
+
+            }
+
+        }
+        function mostrarOpinion(review,index){
+            divOpiniones = document.getElementById("opiniones");
+            //crear div opinion
+            var divOpinion = document.createElement("div");
+            divOpinion.setAttribute("id","opinion"+index);
+            divOpiniones.appendChild(divOpinion);
+
+            //mostrarNombre
+            var nombre = document.createElement("h3");
+            nombre.innerHTML = review.author_name;
+            divOpinion.appendChild(nombre);
+
+            //mostrar rating
+            var rating = document.createElement("p");
+            rating.innerHTML = "Rating= "+ review.rating;
+            divOpinion.appendChild(rating);
+            
+            //mostrar fotos
+            
+            var img = document.createElement("img");
+            img.setAttribute("src",review.profile_photo_url);
+            divOpinion.appendChild(img);
+
+            //mostrar texto
+            var texto = document.createElement("p");
+            texto.innerHTML = review.text;
+            divOpinion.appendChild(texto);
+        }
+
+    </script>
+</head>
+
+<body>
+    <h1 id="nameLugar"></h1>
+    <h3 id="address"></h3>
+
+    <table id="fotos"></table>
+
+
+    <h2>Opiniones usuarios</h2>
+    
+    <div id="opiniones">
+        
+    </div>
+
+
+
+    </table>
+
+
+
+</body>
+
+</html>
