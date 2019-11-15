@@ -3,22 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <style>
+        label {
+            color: rgb(169, 157, 21);
+        }
+
+        .clasificacion {
+            direction: rtl;
+            /* right to left */
+            unicode-bidi: bidi-override;
+            /* bidi de bidireccional */
+        }
+
         td {
-            width: 80px;
-            height: 80px;
+            width: 200px;
+            height: 200px;
             cursor: pointer;
             border: 2px solid blue;
-            background-color: lightgray;
-            align-items: center;
-            font-size: 50px;
+        }
+
+        td img {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+        }
+
+        .opinion {
+            background-color: rgb(214, 243, 244);
+
+            width: 1500px;
+            height: 300px;
+
+            margin: 30px;
+            margin-right: 600px;
+            padding: 30px;
 
         }
-        div.opinion{
-            border-style: solid;
+
+        .usuario {
+            background-color: rgb(254, 159, 142);
+            width: 250px;
+            height: 250px;
+            float: left;
+            /* margin-right: 1400px; */
+            /* padding-right: 1200px; */
+            text-align: center;
+        }
+
+        .texto {
+            background-color: rgb(154, 255, 186);
+            width: 1100px;
+            height: 250px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 22px;
+            margin-left: 40px;
+            float: left;
         }
 
         body {
-            background-color: bisque;
+            background-image: url("https://images.pexels.com/photos/1939485/pexels-photo-1939485.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260");
         }
     </style>
     <script>
@@ -38,6 +80,8 @@
         const CLAVE_API_GOOGLE_PLACES = "AIzaSyBsQYkFS67KMnuQ8gRyHqEQYfczh6OX3v0"//"AIzaSyAC8c2uqJTnar_0mSr-pmCLH4InQSbflJw" //api key generada
 
         const URI = "https://maps.googleapis.com/maps/api/place/details/json?placeid=" + ID_LUGAR + "&key=" + CLAVE_API_GOOGLE_PLACES;
+        const URIFOTOS = "https://maps.googleapis.com/maps/api/place/photo?";
+
 
         function cargarInfoSitio() {
             xmlHttp = new XMLHttpRequest();
@@ -46,7 +90,7 @@
             xmlHttp.send(null);
 
         }
-        
+
         function procesarEventosRecibir() {
             if (xmlHttp.readyState == 4) {
                 if (xmlHttp.status == 200) {
@@ -68,35 +112,24 @@
             //mostrar direccion completa
             document.getElementById("address").innerHTML = placesObject.formatted_address;
 
-            // //mostrar foto
-            // var fotosObject;
-            // fotosObject = placesObject.photos;
-            // var tablaFotos = document.getElementById("fotos");
+            //mostrar fotos
+            var fotos = placesObject.photos;
 
-            // for (let i = 0; i < 2; i++) {
-            //     var fila = document.createElement("tr");
-
-            //     tablaFotos.appendChild(fila);
-
-            //     for (var j = 0; j < 5; j++) {
-            //         var columna = document.createElement("td");
-            //         //var fotoLink = fotosObject.html_attributions[0];
-            //         //columna.appendChild()
-            //         fila.appendChild(columna);
-                    
-            //     }
-
-            // }
+            var divFotos = document.getElementById("fotos");
+            for (let index = 0; index < fotos.length; index++) {
+                const foto = fotos[index];
+                var img = document.createElement("img");
+                img.setAttribute("src", URIFOTOS + "maxwidth=200&photoreference=" + foto.photo_reference + "&key=" + CLAVE_API_GOOGLE_PLACES)
+                divFotos.appendChild(img);
+            }
 
             //mostrar opiniones
-            var reviews = placesObject.reviews;            
-            
+            var reviews = placesObject.reviews;
+
             for (let i = 0; i < reviews.length; i++) {
                 var review = reviews[i];
-                mostrarOpinion(review,i);
-                
+                mostrarOpinion(review, i);
 
-                
                 console.log(review.author_name);
                 console.log(review.profile_photo_url);
                 console.log(review.rating);
@@ -106,32 +139,49 @@
             }
 
         }
-        function mostrarOpinion(review,index){
+        function mostrarOpinion(review, index) {
             divOpiniones = document.getElementById("opiniones");
             //crear div opinion
             var divOpinion = document.createElement("div");
-            divOpinion.setAttribute("id","opinion"+index);
+            divOpinion.setAttribute("id", "op" + index);
+            divOpinion.setAttribute("class", "opinion");
             divOpiniones.appendChild(divOpinion);
 
+            // mostrar datos usuario
+            var divUsuario = document.createElement("div");
+            divUsuario.setAttribute("class", "usuario");
             //mostrarNombre
+
             var nombre = document.createElement("h3");
             nombre.innerHTML = review.author_name;
-            divOpinion.appendChild(nombre);
+            divUsuario.appendChild(nombre);
 
-            //mostrar rating
-            var rating = document.createElement("p");
-            rating.innerHTML = "Rating= "+ review.rating;
-            divOpinion.appendChild(rating);
-            
-            //mostrar fotos
-            
+            // //mostrar rating
+            // var rating = document.createElement("p");
+            // rating.innerHTML = "Rating= " + review.rating;
+            // divUsuario.appendChild(rating);
+
+            //mostrar rating estrella
+            var ratingEstrella = document.createElement("p");
+            ratingEstrella.setAttribute("class", "clasificacion");
+            for (let index = 0; index < review.rating; index++) {
+                var labelEstrella = document.createElement("label");
+                labelEstrella.innerHTML = "★";
+                ratingEstrella.appendChild(labelEstrella);
+            }
+            divUsuario.appendChild(ratingEstrella);
+
+            //mostrar foto
             var img = document.createElement("img");
-            img.setAttribute("src",review.profile_photo_url);
-            divOpinion.appendChild(img);
+            img.setAttribute("src", review.profile_photo_url);
+            divUsuario.appendChild(img);
+
+            divOpinion.appendChild(divUsuario);
 
             //mostrar texto
-            var texto = document.createElement("p");
+            var texto = document.createElement("div");
             texto.innerHTML = review.text;
+            texto.setAttribute("class", "texto");
             divOpinion.appendChild(texto);
         }
 
@@ -139,16 +189,19 @@
 </head>
 
 <body>
+    <div id="lugar">
+
+    </div>
     <h1 id="nameLugar"></h1>
     <h3 id="address"></h3>
 
-    <table id="fotos"></table>
+    <div id="fotos"></div>
 
 
     <h2>Opiniones usuarios</h2>
-    
+
     <div id="opiniones">
-        
+            
     </div>
 
 
