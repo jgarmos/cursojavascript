@@ -84,27 +84,57 @@
 
 
         function cargarInfoSitio() {
-            xmlHttp = new XMLHttpRequest();
-            xmlHttp.onreadystatechange = procesarEventosRecibir;
-            xmlHttp.open('GET', URI, true);
-            xmlHttp.send(null);
+            // xmlHttp = new XMLHttpRequest();
+            // xmlHttp.onreadystatechange = procesarEventosRecibir;
+            // xmlHttp.open('GET', URI, true);
+            // xmlHttp.send(null);
+
+            //CON PROMESAS
+
+            // fetch(URI)
+            //     .then(function (respuesta) {
+            //         console.log("respuesta OK. deserializo ...");
+            //         return respuesta.json();//devuelve otra promesa
+            //     }
+            //     )
+            //     .then(function (objecto_json) {
+            //         console.log(objecto_json);
+            //         procesarEventosRecibir(objecto_json);
+            //     }
+            //     )
+            //     .catch(function (error) {
+            //         console.error("Fallito " + error);
+            //     }
+            //     );
+
+            //CON PROMESAS Y FUNCIONES DE FLECHA
+
+            fetch(URI)
+                .then(respuesta => respuesta.json())
+                .then(objecto_json => procesarEventosRecibir(objecto_json));
 
         }
-
-        function procesarEventosRecibir() {
-            if (xmlHttp.readyState == 4) {
-                if (xmlHttp.status == 200) {
-                    var cuerpo = xmlHttp.responseText;
-                    var objeto_js = JSON.parse(cuerpo);
-                    placesObject = objeto_js.result;
-                    console.log("OPINIONES " + objeto_js.result.reviews);
-                    console.log("NOMBRE AUTOR " + objeto_js.result.reviews[1].author_name);
-                    mostrarDatos();
-                } else {
-                    console.log("error " + xmlHttp.status);
-                }
-            }
+        function procesarEventosRecibir(objeto_js) {
+            placesObject = objeto_js.result;
+            console.log("OPINIONES " + objeto_js.result.reviews);
+            console.log("NOMBRE AUTOR " + objeto_js.result.reviews[1].author_name);
+            mostrarDatos();
         }
+
+        // function procesarEventosRecibir() {
+        //     if (xmlHttp.readyState == 4) {
+        //         if (xmlHttp.status == 200) {
+        //             var cuerpo = xmlHttp.responseText;
+        //             var objeto_js = JSON.parse(cuerpo);
+        //             placesObject = objeto_js.result;
+        //             console.log("OPINIONES " + objeto_js.result.reviews);
+        //             console.log("NOMBRE AUTOR " + objeto_js.result.reviews[1].author_name);
+        //             mostrarDatos();
+        //         } else {
+        //             console.log("error " + xmlHttp.status);
+        //         }
+        //     }
+        // }
         function mostrarDatos() {
             //mostrar nombre del sition
             document.getElementById("nameLugar").innerHTML = placesObject.name;
@@ -201,7 +231,7 @@
     <h2>Opiniones usuarios</h2>
 
     <div id="opiniones">
-            
+
     </div>
 
 

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<head>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script>
+        const URI = "http://10.1.2.10:8081/cfticionic/calculaletra/";
+        var request;
+
+        function calcularLetra() {
+            var numero = document.getElementById("dni").value;
+            // llamarApiConAjax(numero);
+            // llamarAPIconFetch(numero);
+            llamarAPIConJquery(numero);
+        }
+        function llamarAPIConJquery(numero) {
+            var uri = URI + numero;
+            $.ajax({
+                url: uri,
+                success: procesarJsonCalcularLetraDni(JSON.parse(Response)),
+                dataType: dataType
+            });
+        }
+
+
+        function llamarApiConAjax(numero) {
+            var uri = URI + numero;
+            request = new XMLHttpRequest();
+            request.onreadystatechange = procesarEventosRecibir;
+            request.open('GET', uri, true);
+            request.send(null);
+
+        }
+        function procesarEventosRecibir() {
+            if (request.readyState == 4) {
+                if (request.status == 200) {
+                    var cuerpo = request.responseText;
+                    var objeto_js = JSON.parse(cuerpo);
+                    placesObject = objeto_js.result;
+                    procesarJsonCalcularLetraDni(objeto_js)
+                } else {
+                    console.log("error " + xmlHttp.status);
+                }
+            }
+        }
+
+
+        function llamarAPIconFetch(numero) {
+            var uri = URI + numero;
+            fetch(uri)
+                .then(respuesta => respuesta.json())
+                .then(objecto_json => procesarJsonCalcularLetraDni(objecto_json));
+        }
+        function procesarJsonCalcularLetraDni(objeto_js) {
+            var dniObject = objeto_js;
+
+            alert("para su dni " + dniObject.numero + " la letra es: " + dniObject.letra)
+        }
+
+    </script>
+
+    <style>
+        .titulos {
+            color: blueviolet;
+            font-size: 23px;
+        }
+    </style>
+
+</head>
+
+<html>
+
+<body>
+    intro dni:
+    <input type="text" id="dni">
+    <button type="button" onclick="calcularLetra()">calcular letra</button>
+</body>
+
+</html>
