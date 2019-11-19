@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        label {
+            color: rgb(169, 157, 21);
+        }
+
+        .clasificacion {
+            direction: rtl;
+            /* right to left */
+            unicode-bidi: bidi-override;
+            /* bidi de bidireccional */
+        }
+
+        td {
+            width: 200px;
+            height: 200px;
+            cursor: pointer;
+            border: 2px solid blue;
+        }
+
+        td img {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+        }
+
+        .opinion {
+            background-color: rgb(214, 243, 244);
+
+            width: 1500px;
+            height: 300px;
+
+            margin: 30px;
+            margin-right: 600px;
+            padding: 30px;
+
+        }
+
+        .usuario {
+            background-color: rgb(254, 159, 142);
+            width: 250px;
+            height: 250px;
+            float: left;
+            /* margin-right: 1400px; */
+            /* padding-right: 1200px; */
+            text-align: center;
+        }
+
+        .texto {
+            background-color: rgb(154, 255, 186);
+            width: 1100px;
+            height: 250px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 22px;
+            margin-left: 40px;
+            float: left;
+        }
+
+        body {
+            background-image: url("https://images.pexels.com/photos/1939485/pexels-photo-1939485.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260");
+        }
+    </style>
+    <script>
+
+        onload = mostrarDatos;
+        var placesObject;
+        var divOpiniones;
+
+        //1 Obtener API propia https://developers.google.com/places/web-service/get-api-key
+        //2 Elegir un lugar ID_LUGAR https://developers.google.com/places/web-service/place-id
+        //2 Instalar FIREFOX
+        //3 Instalar extensión CORS Everywhere para ese navegador
+        //4 Activar extensión
+
+        const CLAVE_API_GOOGLE_PLACES = "AIzaSyBsQYkFS67KMnuQ8gRyHqEQYfczh6OX3v0"//"AIzaSyAC8c2uqJTnar_0mSr-pmCLH4InQSbflJw" //api key generada
+
+        const URIFOTOS = "https://maps.googleapis.com/maps/api/place/photo?";
+        var placesObject = {
+            "html_attributions": [],
+            "result": {
+                "address_components": [
+                    {
+                        "long_name": "3",
+                        "short_name": "3",
+                        "types": ["street_number"]
+                    },
+                    {
+                        "long_name": "Avenida de las Arcas del Agua",
+                        "short_name": "Av. de las Arcas del Agua",
+                        "types": ["route"]
+                    },
+                    {
+                        "long_name": "Getafe",
+                        "short_name": "Getafe",
+                        "types": ["locality", "political"]
+                    },
+                    {
+                        "long_name": "Madrid",
+                        "short_name": "M",
+                        "types": ["administrative_area_level_2", "political"]
+                    },
+                    {
+                        "long_name": "Comunidad de Madrid",
+                        "short_name": "Comunidad de Madrid",
+                        "types": ["administrative_area_level_1", "political"]
+                    },
+                    {
+                        "long_name": "España",
+                        "short_name": "ES",
+                        "types": ["country", "political"]
+                    },
+                    {
+                        "long_name": "28905",
+                        "short_name": "28905",
+                        "types": ["postal_code"]
+                    }
+                ],
+                "adr_address": "\u003cspan class=\"street-address\"\u003eAv. de las Arcas del Agua, 3\u003c/span\u003e, \u003cspan class=\"postal-code\"\u003e28905\u003c/span\u003e \u003cspan class=\"locality\"\u003eGetafe\u003c/span\u003e, \u003cspan class=\"region\"\u003eMadrid\u003c/span\u003e, \u003cspan class=\"country-name\"\u003eEspaña\u003c/span\u003e",
+                "formatted_address": "Av. de las Arcas del Agua, 3, 28905 Getafe, Madrid, España",
+                "formatted_phone_number": "916 83 38 16",
+                "geometry": {
+                    "location": {
+                        "lat": 40.29388989999999,
+                        "lng": -3.7454672
+                    },
+                    "viewport": {
+                        "northeast": {
+                            "lat": 40.2951498302915,
+                            "lng": -3.743949519708497
+                        },
+                        "southwest": {
+                            "lat": 40.2924518697085,
+                            "lng": -3.746647480291502
+                        }
+                    }
+                },
+                "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/school-71.png",
+                "id": "7df39eea215f7f10aacac2e29f24be7fa81fc741",
+                "international_phone_number": "+34 916 83 38 16",
+                "name": "CFTIC",
+                "opening_hours": {
+                    "open_now": true,
+                    "periods": [
+                        {
+                            "close": {
+                                "day": 1,
+                                "time": "2200"
+                            },
+                            "open": {
+                                "day": 1,
+                                "time": "0800"
+                            }
+                        },
+                        {
+                            "close": {
+                                "day": 2,
+                                "time": "2200"
+                            },
+                            "open": {
+                                "day": 2,
+                                "time": "0800"
+                            }
+                        },
+                        {
+                            "close": {
+                                "day": 3,
+                                "time": "2200"
+                            },
+                            "open": {
+                                "day": 3,
+                                "time": "0800"
+                            }
+                        },
+                        {
+                            "close": {
+                                "day": 4,
+                                "time": "2200"
+                            },
+                            "open": {
+                                "day": 4,
+                                "time": "0800"
+                            }
+                        },
+                        {
+                            "close": {
+                                "day": 5,
+                                "time": "2200"
+                            },
+                            "open": {
+                                "day": 5,
+                                "time": "0800"
+                            }
+                        }
+                    ],
+                    "weekday_text": [
+                        "lunes: 8:00–22:00",
+                        "martes: 8:00–22:00",
+                        "miércoles: 8:00–22:00",
+                        "jueves: 8:00–22:00",
+                        "viernes: 8:00–22:00",
+                        "sábado: Cerrado",
+                        "domingo: Cerrado"
+                    ]
+                },
+                "photos": [
+                    {
+                        "height": 400,
+                        "html_attributions": [
+                            "\u003ca href=\"https://maps.google.com/maps/contrib/108127362489688474070/photos\"\u003eFrancisco José Gutiérrez Moreno\u003c/a\u003e"
+                        ],
+                        "photo_reference": "CmRaAAAAjADCLL3dTj5DQdCxaxWyipBUgw_3Pvs2FOZRBt17JDy-VriRAO4e5jAgpyChd7gDabyRvU9duzzIJgqEy2f0wfZPpayT7dObf8jaEQTfND-rZAdP29qExIEB5qlG4FgVEhBf3wuE9EGG8JDY0OMqhGK-GhTLE5Hu1c94e527j2b7_xwreEOCQw",
+                        "width": 400
+                    },
+                    {
+                        "height": 1661,
+                        "html_attributions": [
+                            "\u003ca href=\"https://maps.google.com/maps/contrib/114602080203257331949/photos\"\u003eFernando Gutierrez\u003c/a\u003e"
+                        ],
+                        "photo_reference": "CmRaAAAA9_-Z4z454dqmGzkEFKaOZZXlo8JYwYVv2zOP32sRR4K3N_e2gaqkjGYzTVVw1l2e29jpVafgIR_qsFWoReH0IdfkOHzFUEEjpDcTFxRqciMpjteq-B8NR-Kk_f9lodjJEhAm8BZ9t4MX3JhnAHgC6aJPGhRhfrxRtgs3YNSEqKHL-5QG5dbT0w",
+                        "width": 2048
+                    },
+                    {
+                        "height": 1536,
+                        "html_attributions": [
+                            "\u003ca href=\"https://maps.google.com/maps/contrib/112951639137445518211/photos\"\u003eEl Pirri\u003c/a\u003e"
+                        ],
+                        "photo_reference": "CmRaAAAA9FQAwlelaiGJJORBtSXPk0_PZ-PbxAefD1kaKHEApGmxUx_m-n0ZI9xsAxbWomTiJoJXzXe9Eh2jpVpJpZaiCIKexPe5gNzPU5C9paeJlIHVds0d8j_gdR_TySHgjiXsEhCg5t4ZX1X39zO12G69-C0PGhSGeRY23Gm__ophnQd05KzKleOC2g",
+                        "width": 2560
+                    },
+                    {
+                        "height": 1661,
+                        "html_attributions": [
+                            "\u003ca href=\"https://maps.google.com/maps/contrib/114602080203257331949/photos\"\u003eFernando Gutierrez\u003c/a\u003e"
+                        ],
+                        "photo_reference": "CmRaAAAAroovs8udzOsCx9xhtX_KDfSf6r-xxEWA5G_dthG3664uS664m52ZdZs_VMnkUlEqttMBTgaCKDBBV9PFL8PaqE69l4a3rQZDmgRm2NagDz0jIqzO61y0R6_lxI9EPDroEhDjdM7r5p27FXi_Wx4c-4yoGhSIMFA2io2KtawF1NW5LGryYsqqFQ",
+                        "width": 2048
+                    },
+                    {
+                        "height": 3840,
+                        "html_attributions": [
+                            "\u003ca href=\"https://maps.google.com/maps/contrib/109738986268730862079/photos\"\u003eRuben Arturo Sarabia Lugo\u003c/a\u003e"
+                        ],
+                        "photo_reference": "CmRaAAAAK8T0dgBXc1_OO_M8nW57QwAh35zdkgSsDRdGDtgcDuEqhVAM1uRnujHLVPAa6Em7oBiqpfmswEVbXymbxfvgsLcXS0jquMpj_xsFZKfYx-ZWbCddPmsRsLq2fox98Lo2EhAvP-cYAQQUS_PnY_J2GYdBGhTeK3OeVtVOQyCrPtA9OZFOfHhOZA",
+                        "width": 2160
+                    }
+                ],
+                "place_id": "ChIJd3WcsXiKQQ0R6QCqzzeHf_Y",
+                "plus_code": {
+                    "compound_code": "77V3+HR Getafe, España",
+                    "global_code": "8CGR77V3+HR"
+                },
+                "rating": 4.2,
+                "reference": "ChIJd3WcsXiKQQ0R6QCqzzeHf_Y",
+                "reviews": [
+                    {
+                        "author_name": "César Sánchez",
+                        "author_url": "https://www.google.com/maps/contrib/114720067199982320549/reviews",
+                        "language": "es",
+                        "profile_photo_url": "https://lh4.ggpht.com/-9mYcRhRCTqI/AAAAAAAAAAI/AAAAAAAAAAA/0J4qgNoqJxs/s128-c0x00000000-cc-rp-mo-ba5/photo.jpg",
+                        "rating": 4,
+                        "relative_time_description": "Hace 4 meses",
+                        "text": "En cuanto a la infraestructura después de estar funcionando ya hace 30años ya podían haber reparado las goteras cuando llueve, por lo demás es fantástico las enseñanzas de TIC son variadas y actuales, para finalizar el personal es muy agradable y te ayuda mucho. Seguiré haciendo cursos aquí sin duda.",
+                        "time": 1561269007
+                    },
+                    {
+                        "author_name": "Irene Samurai",
+                        "author_url": "https://www.google.com/maps/contrib/110634472041725834069/reviews",
+                        "language": "es",
+                        "profile_photo_url": "https://lh3.ggpht.com/-7OPc3BGIJ28/AAAAAAAAAAI/AAAAAAAAAAA/Hpr0YJBeXoI/s128-c0x00000000-cc-rp-mo-ba6/photo.jpg",
+                        "rating": 5,
+                        "relative_time_description": "Hace 4 meses",
+                        "text": "Magnífico centro de formación. Hacen un buen trabajo para los desempleados. El profesorado es de lo mejor.",
+                        "time": 1562943535
+                    },
+                    {
+                        "author_name": "Mirna Areco",
+                        "author_url": "https://www.google.com/maps/contrib/115933699468674534591/reviews",
+                        "language": "es",
+                        "profile_photo_url": "https://lh5.ggpht.com/-aw8oiSXIPoQ/AAAAAAAAAAI/AAAAAAAAAAA/IJQRif2YnAU/s128-c0x00000000-cc-rp-mo-ba4/photo.jpg",
+                        "rating": 4,
+                        "relative_time_description": "Hace 4 meses",
+                        "text": "No le pongo un 5 porque queda un poco lejos para los que viven en Madrid capital, está bien comunicado sí, pero hay que hacer muchos transbordos. Por lo demás la instalación muy bien",
+                        "time": 1562066753
+                    },
+                    {
+                        "author_name": "Marcelino Martinez Dieguez",
+                        "author_url": "https://www.google.com/maps/contrib/114460522124297621643/reviews",
+                        "language": "es",
+                        "profile_photo_url": "https://lh5.ggpht.com/-efCG9yP6qnU/AAAAAAAAAAI/AAAAAAAAAAA/CyFaD-UC-CQ/s128-c0x00000000-cc-rp-mo-ba3/photo.jpg",
+                        "rating": 5,
+                        "relative_time_description": "Hace 2 semanas",
+                        "text": "La referencia en Madrid para quien quiera formarse en Nuevas Tecnologías con cursos demandados y certificaciones demandados por el mercado",
+                        "time": 1572549709
+                    },
+                    {
+                        "author_name": "Ruben Arturo Sarabia Lugo",
+                        "author_url": "https://www.google.com/maps/contrib/109738986268730862079/reviews",
+                        "language": "es",
+                        "profile_photo_url": "https://lh6.ggpht.com/-W9YP8UvTtpo/AAAAAAAAAAI/AAAAAAAAAAA/Orc_UTtTf58/s128-c0x00000000-cc-rp-mo-ba4/photo.jpg",
+                        "rating": 5,
+                        "relative_time_description": "Hace 5 meses",
+                        "text": "Es un excelente lugar para aprender de tecnología, esta gente tiene todo para impartir formación al respecto y apoyar al estudiante y emprendedores del área.",
+                        "time": 1560397320
+                    }
+                ],
+                "scope": "GOOGLE",
+                "types": ["point_of_interest", "establishment"],
+                "url": "https://maps.google.com/?cid=17762064129149501673",
+                "user_ratings_total": 34,
+                "utc_offset": 60,
+                "vicinity": "Avenida de las Arcas del Agua, 3, Getafe",
+                "website": "http://cftic.centrosdeformacion.empleo.madrid.org/"
+            },
+            "status": "OK"
+        }
+
+        function ordenarOpiniones() {
+            //elimar todos las opiniones
+            var divOpiniones = document.getElementById("opiniones");
+
+            while (divOpiniones.firstChild) {
+                divOpiniones.removeChild(divOpiniones.firstChild);
+            }
+            var ordenarPor = document.getElementById("ordenarSelect").value;
+
+            
+            if (ordenarPor == "rating") {
+
+                placesObject.result.reviews = reviews.sort(function (a, b) {
+                    return a.rating - b.rating;
+                });
+
+            } else if (ordenarPor = "antiguedad") {
+                placesObject.result.review = reviews.sort(function (a, b) {
+                    return a.time - b.time;
+                });
+
+            }
+
+
+            mostrarDatos(json);
+        }
+
+        function mostrarDatos(placesObject) {
+            
+            //mostrar nombre del sition
+            document.getElementById("nameLugar").innerHTML = placesObject.name;
+
+            //mostrar direccion completa
+            document.getElementById("address").innerHTML = placesObject.formatted_address;
+
+            //mostrar fotos
+            var fotos = placesObject.photos;
+
+            var divFotos = document.getElementById("fotos");
+            for (let index = 0; index < fotos.length; index++) {
+                const foto = fotos[index];
+                var img = document.createElement("img");
+                img.setAttribute("src", URIFOTOS + "maxwidth=200&photoreference=" + foto.photo_reference + "&key=" + CLAVE_API_GOOGLE_PLACES)
+                divFotos.appendChild(img);
+            }
+
+            //mostrar opiniones
+            var reviews = placesObject.reviews;
+
+
+            for (let i = 0; i < reviews.length; i++) {
+                var review = reviews[i];
+                mostrarOpinion(review, i);
+            }
+
+        }
+        function mostrarOpinion(review, index) {
+            divOpiniones = document.getElementById("opiniones");
+            //crear div opinion
+            var divOpinion = document.createElement("div");
+            divOpinion.setAttribute("id", "op" + index);
+            divOpinion.setAttribute("class", "opinion");
+            divOpiniones.appendChild(divOpinion);
+
+            // mostrar datos usuario
+            var divUsuario = document.createElement("div");
+            divUsuario.setAttribute("class", "usuario");
+            //mostrarNombre
+
+            var nombre = document.createElement("h3");
+            nombre.innerHTML = review.author_name;
+            divUsuario.appendChild(nombre);
+
+            // //mostrar rating
+            // var rating = document.createElement("p");
+            // rating.innerHTML = "Rating= " + review.rating;
+            // divUsuario.appendChild(rating);
+
+            //mostrar rating estrella
+            var ratingEstrella = document.createElement("p");
+            ratingEstrella.setAttribute("class", "clasificacion");
+            for (let index = 0; index < review.rating; index++) {
+                var labelEstrella = document.createElement("label");
+                labelEstrella.innerHTML = "★";
+                ratingEstrella.appendChild(labelEstrella);
+            }
+            divUsuario.appendChild(ratingEstrella);
+
+            //mostrar foto
+            var img = document.createElement("img");
+            img.setAttribute("src", review.profile_photo_url);
+            divUsuario.appendChild(img);
+
+            divOpinion.appendChild(divUsuario);
+
+            //mostrar texto
+            var texto = document.createElement("div");
+            texto.innerHTML = review.text;
+            texto.setAttribute("class", "texto");
+            divOpinion.appendChild(texto);
+        }
+
+    </script>
+</head>
+
+<body>
+    <div id="lugar">
+
+    </div>
+    <h1 id="nameLugar"></h1>
+    <h3 id="address"></h3>
+
+    <div id="fotos"></div>
+
+
+    <h2>Opiniones usuarios</h2>
+    <select name="select" id="ordenarSelect" onchange="ordenarOpiniones()">
+        <option value=""></option>
+        <option value="rating">ordernar por rating</option>
+        <option value="antiguedad">ordernar por antiguedad</option>
+    </select>
+
+
+    <div id="opiniones">
+
+    </div>
+
+
+
+    </table>
+
+
+
+</body>
+
+</html>
