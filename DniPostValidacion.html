@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<head>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+
+
+
+    <script>
+
+        // 
+
+        const URI = "http://10.1.2.10:8081/cfticionic/calculaletra/";
+        const URIpost = "http://10.1.2.10:8081/cfticionic/dni";
+        var request;
+
+        class Dni {
+            constructor(num, letr) {
+                this.numero = num,
+                    this.letra = letr
+            }
+            mostrar() {
+                console.log(this.numero + " " + this.letra);
+            }
+
+
+        }
+
+        function ValidarDni(dni) {
+            const expregNumero = /^[0-9]{8,8}$/; //regex para numero
+            const expregLetra = /^[TRWAGMYFPDXBNJZSQVHLCKET]$/; //regex letra valida
+
+            var numeroCorrecto = expregNumero.test(dni.numero);
+            var letraCorrecta = expregLetra.test(dni.letra); 
+
+            // if (!numeroCorrecto){
+            //     alert("numeroIncorrecto");
+            // }
+            // if (!letraCorrecta){
+            //     alert("letra incorrecta");
+            // }
+            if(numeroCorrecto && letraCorrecta){
+                return true;
+            }
+            else{
+                return false;
+            }
+
+        }
+
+        function calcularLetra() {
+            var numero = document.getElementById("dni").value;
+            llamarApiConAjax(numero);
+            // llamarAPIconFetch(numero);
+        }
+
+
+        function enviarDni() {
+            
+            //antes de 
+            
+            var numeroDni = document.getElementById("dni").value;
+            var letraDni = document.getElementById("letra").value;
+            var dni = new Dni(numeroDni, letraDni);
+
+
+            var esValido = ValidarDni(dni);
+            //ñapa qui
+            if (!esValido){
+                
+                var errorMessage = document.getElementById("mensajeError");
+                errorMessage.style.visibility = "visible"; 
+                return;
+            } 
+
+            
+            dni.mostrar();
+            var dniJson = JSON.stringify(dni);
+
+            //enviar
+            var uri = URIpost;
+            request = new XMLHttpRequest();
+            request.onreadystatechange = procesarPostCall;
+
+            request.open('POST', uri, true);
+            request.setRequestHeader("Content-Type", "application/json");
+            request.send(dniJson);
+
+            //enviar usando fetch
+
+            // fetch(uri, {
+            //     method: 'POST', // or 'PUT'
+            //     body: dni, // data can be `string` or {object}!
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     }
+            // }).then(res => res.text())
+            //     .catch(error => console.error('Error:', error))
+            //     .then(response => console.log('Success:', response.status));
+
+        }
+
+        function procesarPostCall() {
+            if (request.readyState == 4) {
+                if (request.status == 201) {
+                    console.log("relax todo va bien");
+                } else {
+                    console.log("error " + request.status);
+                }
+            }
+        }
+
+        function llamarApiConAjax(numero) {
+            var uri = URI + numero;
+            request = new XMLHttpRequest();
+            request.onreadystatechange = procesarEventosRecibir;
+            request.open('GET', uri, true);
+            request.send(null);
+
+
+
+        }
+        function procesarEventosRecibir() {
+            if (request.readyState == 4) {
+                if (request.status == 200) {
+                    var cuerpo = request.responseText;
+                    var objeto_js = JSON.parse(cuerpo);
+                    placesObject = objeto_js.result;
+                    procesarJsonCalcularLetraDni(objeto_js)
+                } else {
+                    console.log("error " + xmlHttp.status);
+                }
+            }
+        }
+
+
+        function llamarAPIconFetch(numero) {
+            var uri = URI + numero;
+            fetch(uri)
+                .then(respuesta => respuesta.json())
+                .then(objecto_json => procesarJsonCalcularLetraDni(objecto_json));
+        }
+        function procesarJsonCalcularLetraDni(objeto_js) {
+            var dniObject = objeto_js;
+
+            alert("para su dni " + dniObject.numero + " la letra es: " + dniObject.letra)
+        }
+
+    </script>
+
+    <style>
+        .titulos {
+            color: blueviolet;
+            font-size: 23px;
+        }
+    </style>
+
+</head>
+
+<html>
+
+<body>
+
+
+
+    <!-- <form>
+        <label>Letra de DNI</label>
+        <input type="text" id="dni">
+        <label>Letra de DNI</label>
+        <input type="text" id="letra">
+        <button type="button" onclick="enviarDni()">Guardar Dni</button>
+    </form> -->
+
+    <!-- <button type="button" onclick="calcularLetra()">calcular letra</button> -->
+
+    <div class="card">
+
+        <form id="myForm">
+            <div class="form-group">
+                <label for="formGroupExampleInput">Numero Dni:</label>
+                <input type="text" class="form-control" id="dni" placeholder="Example input">
+            </div>
+            <div class="form-group">
+                <label for="formGroupExampleInput2">letra Dni:</label>
+                <input type="text" class="form-control" id="letra" placeholder="Another input">
+            </div>
+            <button type="submit" onclick="enviarDni()" class="btn btn-primary">Enviar DNI</button>
+            <div id="mensajeError" style="visibility: hidden" class="invalid-feedback">Datos incorrectos</div>
+        </form>
+    </div>
+
+</body>
+
+</html>
