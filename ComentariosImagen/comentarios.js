@@ -49,11 +49,19 @@ function mostrarSesion() {
 }
 
 function crearFotos() {
-    var divFotos = document.getElementById("fotos");
+    var carrouselFotos  = document.getElementById("carrouselFotos");
     for (let i = 0; i < fotos.length; i++) {
+        
+        var carouselItem = document.createElement("div");
+        carouselItem.setAttribute("class","carousel-item");
+
+
         var img = document.createElement("img");
+
         img.setAttribute("src", fotos[i].ruta);
-        divFotos.appendChild(img);
+        img.setAttribute("class","d-block w-100")
+        carouselItem.appendChild(img);
+        carrouselFotos.appendChild(carouselItem);
     }
 
 }
