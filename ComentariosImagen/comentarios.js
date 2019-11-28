@@ -1,9 +1,13 @@
 
 // ***************login***********************
-//Como ususario quiero loguearme en el sistema
+
 
 const URISession = "http://10.1.2.10:8081/cfticionic/usuariocftic";
-const URIfotoAPI = "http://10.1.2.10:8081/cfticionic/fotos";
+const URIfotosAPI = "http://10.1.2.10:8081/cfticionic/fotos";
+const URIFOTOAPI =  "http://10.1.2.10:8081/cfticionic/foto"  // http://10.1.2.10:8081/cfticionic/foto?key=CQOYQYTQ3CP3&idfoto=3
+const URICommentsAPI =  "http://10.1.2.10:8081/cfticionic/comentarios/foto" // http://10.1.2.10:8081/cfticionic/comentarios/foto?key=CQOYQYTQ3CP3&idfoto=5
+
+
 var request;
 var fotos;
 
@@ -15,7 +19,6 @@ class Usuario {
     mostrar() {
         console.log(this.nombre + " " + this.pass);
     }
-
 }
 
 function login() {
@@ -28,45 +31,113 @@ function login() {
 
     //enviar
     llamarApiSession(usuario);
-
-
 }
 
 function mostrarFotos() {
     llamarApiFotos();
-
 }
 
-//  POST
-
-// function GetTokenUsuario(usuario){
-//     llamarApiConAjax(usuario)
-
-// }
 
 function mostrarSesion() {
 
 }
 
+function peliculaInfo(elemImg){
+    
+    var idFoto = elemImg.id;
+
+    //obtener info foto 
+    redireccionarAPeliculaPage();
+    
+    llamarApiFoto(idFoto);
+
+
+    //obtener comentarios
+    //llamarApiComentarios(idFoto);
+
+
+    //redicreccionar a pelicula page
+    
+}
+
+
+
+
+
 function crearFotos() {
-    var carrouselFotos  = document.getElementById("carrouselFotos");
+    var fotosDiv = document.getElementById("fotos");
     for (let i = 0; i < fotos.length; i++) {
         
-        var carouselItem = document.createElement("div");
-        carouselItem.setAttribute("class","carousel-item");
-
-
         var img = document.createElement("img");
 
         img.setAttribute("src", fotos[i].ruta);
-        img.setAttribute("class","d-block w-100")
-        carouselItem.appendChild(img);
-        carrouselFotos.appendChild(carouselItem);
+        img.setAttribute("id", fotos[i].idfoto);
+        img.setAttribute("onclick","peliculaInfo(this)");
+        fotosDiv.appendChild(img);
     }
+}
+
+function llamarApiComentarios(fotoId){
+    var uri = URICommentsAPI ;
+    //cojer key de session de localstorage
+    var session = leerSesionDelLocalStorage("session");
+    var sessionObject = JSON.parse(session);
+    
+    uri = uri + "?key=" + sessionObject.token + "&idfoto" + fotoId;
+
+    request = new XMLHttpRequest();
+    request.onreadystatechange = procesarPeliculaInfo;
+    request.open('GET', uri, true);
+    request.send(null);
 
 }
+
+function llamarApiFoto(fotoId){
+    var uri = URIFOTOAPI;
+    //cojer key de session de localstorage
+    var session = leerSesionDelLocalStorage("session");
+    var sessionObject = JSON.parse(session);
+    
+    uri = uri + "?key=" + sessionObject.token + "&idfoto" + fotoId;
+
+    request = new XMLHttpRequest();
+    request.onreadystatechange = procesarPeliculaInfo;
+    request.open('GET', uri, true);
+    request.send(null);
+
+}
+
+function procesarPeliculaInfo() {
+    if (request.readyState == 4) {
+        if (request.status == 200) { //exito
+            var cuerpo = request.responseText;
+            var pelicula = JSON.parse(cuerpo);
+            mostrarPeliculaInfo(pelicula);
+        } else {
+            console.log("error " + request.status);
+        }
+    }
+}
+
+function mostrarPeliculaInfo(pelicula){
+    var fotoDiv = document.getElementById("foto");
+
+    var img = document.createElement("img");
+
+    img.setAttribute("src", pelicula.ruta); 
+    
+    fotoDiv.appendChild(img);
+}
+
+
 function llamarApiFotos() {
-    var uri = URIfotoAPI;
+    var uri = URIfotosAPI;
+    //cojer key de session de localstorage
+    var session = leerSesionDelLocalStorage("session");
+    var sessionObject = JSON.parse(session);
+    
+    uri = uri + "?key=" + sessionObject.token;
+
     request = new XMLHttpRequest();
     request.onreadystatechange = procesarFotosResponse;
     request.open('GET', uri, true);
@@ -88,6 +159,8 @@ function procesarFotosResponse() {
 
 function llamarApiSession(usuario) {
     var uri = URISession;
+    //cojer sesesion
+
     request = new XMLHttpRequest();
     request.onreadystatechange = procesarEventosRecibir;
     request.open('POST', uri, true);
@@ -101,7 +174,7 @@ function procesarEventosRecibir() {
             var sesion = JSON.parse(cuerpo)
 
             //guardar sesion en local estorage
-            guardarEnLocalStorage(sesion.nombre, sesion.token);
+            guardarEnLocalStorage("session", cuerpo);
             redireccionarAHomepage();
 
         } else {
@@ -112,6 +185,12 @@ function procesarEventosRecibir() {
 
 function redireccionarAHomepage() {
     window.location = "homepage.html";
+}
+
+
+function redireccionarAPeliculaPage (){
+    window.location = "pelicula.html";
+
 }
 
 //*************Local storage****************

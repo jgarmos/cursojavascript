@@ -1,0 +1,4 @@
+
+http://10.1.2.10:8081/cfticionic/comentarios/foto?key=NDNYVRRXROVY&idfoto=5
+
+[{"id":2,"autor":"alumno1","idfoto":5,"momento":1574669291523,"texto":"la verdad, me ha gustado aunque el final un poco feo"},{"id":54,"autor":"alumno10","idfoto":5,"momento":1574770312481,"texto":"hola"},{"id":118,"autor":"alumno15","idfoto":5,"momento":1574849216120,"texto":"Envio de pruebas"}]   
