@@ -38,6 +38,10 @@ function mostrarSesion() {
 function peliculaInfo(elemImg){
     
     var idFoto = elemImg.id;
+    
+    //guardar fotoId en local storage antes de rediredccionar
+    guardarEnLocalStorage("peliculaId", idFoto);
+
 
     //obtener info foto 
     redireccionarAPeliculaPage();
@@ -51,6 +55,12 @@ function peliculaInfo(elemImg){
 
     //redicreccionar a pelicula page
     
+}
+//esta es mi funcion onLoad que llama a la API para cargar la informacion en la nueva pagina 
+function cargarPeliculaInfo(){
+    var ultimaPeliculaClickadaId = leerDeLocalStorage("peliculaId")
+    llamarApiFoto(ultimaPeliculaClickadaId);
+    llamarApiComments(ultimaPeliculaClickadaId);
 }
 
 
@@ -71,7 +81,7 @@ function crearFotos() {
 function llamarApiComentarios(fotoId){
     var uri = URICommentsAPI ;
     //cojer key de session de localstorage
-    var session = leerSesionDelLocalStorage("session");
+    var session = leerDeLocalStorage("session");
     var sessionObject = JSON.parse(session);
     
     uri = uri + "?key=" + sessionObject.token + "&idfoto" + fotoId;
@@ -93,10 +103,213 @@ function mostrarPeliculaInfo(pelicula){
     fotoDiv.appendChild(img);
 }
 
+function mostrarPeliculaComments(comentarios){
+    var commentsDiv = document.getElementById("comentarios");
+    
+    var comentariosElement =  document.getElementById("comentarios2");
+    
+
+    var contadorComentarioElement = document.getElementById("numeroComentarios");
+        contadorComentarioElement.innerHTML = "numero de comentarios = " + comentarios.length;
+
+    comentarios.forEach(comentario => {
+        var comentarioId = comentario.id;
+        var autor = comentario.autor;
+        var idfoto = comentario.idfoto;
+        var momento = comentario.momento;
+        var texto = comentario.texto;
+
+        // //crear elementos html
+        // var comentarioDiv = document.createElement("div");
+        // comentarioDiv.setAttribute("id", comentarioId );
+
+        // var textoP = document.createElement("p");
+        // var autorP = document.createElement("p");
+        // autorP = "Autor: " + autorP;
+        // textoP.innerHTML = "Texto: " + texto;
+
+        
+        // comentarioDiv.appendChild(textoP);
+        // commentsDiv.appendChild(comentarioDiv);
+
+        
 
 
 
-//***********Redirecciones************** */
+        var elementoComentario = crearElementoComentario(comentario);
+        comentariosElement.appendChild(elementoComentario);
+
+    });
+}
+function crearFotoCommentElement(){
+    var column = document.createElement("div");
+    column.setAttribute("class","col-xs-2 col-md-1");
+
+    var img = document.createElement("img");
+    img.setAttribute("src","http://placehold.it/80");
+    img.setAttribute("class","img-circle img-responsive");
+    img.setAttribute("alt","");    
+    column.appendChild(img);
+    return column;
+} 
+
+function crearTextoCommentElement(texto){
+    var commentTextDiv = document.createElement("div");
+    commentTextDiv.setAttribute("class","comment-text");
+
+    commentTextDiv.innerHTML = texto;
+
+    return commentTextDiv;
+} 
+
+function crearUserNameAndDateELement(comentario){
+
+    var containerDiv = document.createElement("div");
+    containerDiv.setAttribute("class","mic-info");
+    containerDiv.innerHTML = "Por: ";
+
+    var aElement = document.createElement("a");
+    aElement.setAttribute("href","#");
+    aElement.innerHTML = comentario.autor;
+
+    containerDiv.appendChild(aElement);
+
+    return containerDiv;
+}
+
+function crearBotonesElement(){
+    var actionElement = document.createElement("div");
+    actionElement.setAttribute("class","action");
+
+    var buttonEditar = document.createElement("button");
+    buttonEditar.setAttribute("type","button");
+    buttonEditar.setAttribute("class","btn btn-primary btn-xs");
+    buttonEditar.setAttribute("title","Editar");
+    var spanElementPencil = document.createElement("span");
+    spanElementPencil.setAttribute("class","glyphicon glyphicon-pencil");
+    buttonEditar.appendChild(spanElementPencil);
+    actionElement.appendChild(buttonEditar);
+
+    var buttonOk = document.createElement("button");
+    buttonOk.setAttribute("type","button");
+    buttonOk.setAttribute("class","btn btn-success btn-xs");
+    buttonOk.setAttribute("title","Ok");
+    var spanElementOk = document.createElement("span");
+    spanElementOk.setAttribute("class","glyphicon glyphicon-ok");
+    buttonOk.appendChild(spanElementOk);
+    actionElement.appendChild(buttonOk);
+
+    var buttonBorrar = document.createElement("button");
+    buttonBorrar.setAttribute("type","button");
+    buttonBorrar.setAttribute("class","btn btn-danger btn-xs");
+    buttonBorrar.setAttribute("title","Borrar");
+    var spanElementBorrar = document.createElement("span");
+    spanElementBorrar.setAttribute("class","glyphicon glyphicon-trash");
+    buttonBorrar.appendChild(spanElementBorrar);
+    actionElement.appendChild(buttonBorrar);
+
+
+    
+    return actionElement;
+
+
+
+
+    // <div class="action">
+    // //                                         <button type="button" class="btn btn-primary btn-xs" title="Edit">
+    // //                                             <span class="glyphicon glyphicon-pencil"></span>
+    // //                                         </button>
+    // //                                         <button type="button" class="btn btn-success btn-xs" title="Approved">
+    // //                                             <span class="glyphicon glyphicon-ok"></span>
+    // //                                         </button>
+    // //                                         <button type="button" class="btn btn-danger btn-xs" title="Delete">
+    // //                                             <span class="glyphicon glyphicon-trash"></span>
+    // //                                         </button>
+    // //                                     </div>
+}
+
+
+function crearContenedorInfoComentario(comentario){
+    var contenedorElement = document.createElement("div");
+    contenedorElement.setAttribute("class","col-xs-10 col-md-11");
+    
+    //crear usuario y fecha
+    var userNameAndDateELement = crearUserNameAndDateELement(comentario);
+    contenedorElement.appendChild(userNameAndDateELement);
+
+    //crear texto comentario
+    var texto = crearTextoCommentElement (comentario.texto);
+    contenedorElement.appendChild(texto);
+
+    //crear botones
+    var botonesElement = crearBotonesElement();
+    contenedorElement.appendChild(botonesElement);
+
+    return contenedorElement;
+}
+
+function crearElementoComentario(comentario){
+    var listGroupItem = document.createElement("li");
+    listGroupItem.setAttribute("class","list-group-item");
+    
+    var rowItem = document.createElement("div");
+    rowItem.setAttribute("class","row");
+    var fotoElement = crearFotoCommentElement();
+    
+    var contenedorInfoComentario = crearContenedorInfoComentario(comentario);
+    
+
+
+
+    rowItem.appendChild(fotoElement);
+    rowItem.appendChild(contenedorInfoComentario);
+
+    listGroupItem.appendChild(rowItem);
+    
+
+
+    return  listGroupItem;
+
+
+
+    // <li class="list-group-item">
+    //                             <div class="row">
+    //                                 <div class="col-xs-2 col-md-1">
+    //                                     <img src="http://placehold.it/80" class="img-circle img-responsive" alt="" />
+    //                                 </div>
+    //                                 <div class="col-xs-10 col-md-11">
+    //                                     <div>
+    //                                         <a href="http://bootsnipp.com/BhaumikPatel/snippets/4ldn">Cool Sign Up</a>
+    //                                         <div class="mic-info">
+    //                                             By: <a href="#">Bhaumik Patel</a> on 11 Nov 2013
+    //                                         </div>
+    //                                     </div>
+    //                                     <div class="comment-text">
+    //                                         Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy
+    //                                         nibh
+    //                                         euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi
+    //                                         enim
+    //                                     </div>
+    //                                     <div class="action">
+    //                                         <button type="button" class="btn btn-primary btn-xs" title="Edit">
+    //                                             <span class="glyphicon glyphicon-pencil"></span>
+    //                                         </button>
+    //                                         <button type="button" class="btn btn-success btn-xs" title="Approved">
+    //                                             <span class="glyphicon glyphicon-ok"></span>
+    //                                         </button>
+    //                                         <button type="button" class="btn btn-danger btn-xs" title="Delete">
+    //                                             <span class="glyphicon glyphicon-trash"></span>
+    //                                         </button>
+    //                                     </div>
+    //                                 </div>
+    //                             </div>
+    //                         </li>
+
+}
+
+
+
+//********************************   REDIRECCIONES   *********************************************/
 
 function redireccionarAHomepage() {
     window.location = "homepage.html";
@@ -108,13 +321,14 @@ function redireccionarAPeliculaPage (){
 
 }
 
-// ********** llamadas a la API **************
+// **************************       LLAMADAS A LA API       ***********************************
 
 const URISession = "http://10.1.2.10:8081/cfticionic/usuariocftic";
 const URIfotosAPI = "http://10.1.2.10:8081/cfticionic/fotos";
 const URIFOTOAPI =  "http://10.1.2.10:8081/cfticionic/foto"  // http://10.1.2.10:8081/cfticionic/foto?key=CQOYQYTQ3CP3&idfoto=3
 const URICommentsAPI =  "http://10.1.2.10:8081/cfticionic/comentarios/foto" // http://10.1.2.10:8081/cfticionic/comentarios/foto?key=CQOYQYTQ3CP3&idfoto=5
 var request;
+var request2;
 
 
 // SERVICIO 1 LOGIN
@@ -166,7 +380,7 @@ function procesarEventosRecibir() {
 function llamarApiFotos() {
     var uri = URIfotosAPI;
     //cojer key de session de localstorage
-    var session = leerSesionDelLocalStorage("session");
+    var session = leerDeLocalStorage("session");
     var sessionObject = JSON.parse(session);
     
     uri = uri + "?key=" + sessionObject.token;
@@ -203,10 +417,10 @@ function procesarFotosResponse() {
 function llamarApiFoto(fotoId){
     var uri = URIFOTOAPI;
     //cojer key de session de localstorage
-    var session = leerSesionDelLocalStorage("session");
+    var session = leerDeLocalStorage("session");
     var sessionObject = JSON.parse(session);
     
-    uri = uri + "?key=" + sessionObject.token + "&idfoto" + fotoId;
+    uri = uri + "?key=" + sessionObject.token + "&idfoto=" + fotoId;
 
     request = new XMLHttpRequest();
     request.onreadystatechange = procesarPeliculaInfo;
@@ -228,12 +442,55 @@ function procesarPeliculaInfo() {
 }
 
 
+// SERVICIO 5 OBTENER LOS COMENTARIOS DE UNA FOTO
+// GET http://10.1.2.10:8081/cfticionic/comentarios/foto?key=CQOYQYTQ3CP3&idfoto=5
+
+// RESPUESTA 200 OK
+
+// [{"id":66,"autor":"alumno10","idfoto":5,"momento":1574598838203,"texto":"la verdad, me ha gustado aunque el final un poco feo"},{"id":67,"autor":"alumno10","idfoto":5,"momento":1574596744100,"texto":"a la dirección artística, pá matarla"}]
+
+// Otros códigos de respuesta:
+
+// 204 Sin Contenido (La foto solicitada no tiene ningún comentario asociado) 400 BAD Request (falta algún parámetro) 403 Prohibido (La credencial key no es válida)
+
+
+function llamarApiComments(fotoId){
+    var uri = URICommentsAPI;
+    //cojer key de session de localstorage
+    var session = leerDeLocalStorage("session");
+    var sessionObject = JSON.parse(session);
+    
+    uri = uri + "?key=" + sessionObject.token + "&idfoto=" + fotoId;
+
+    request2 = new XMLHttpRequest();
+    request2.onreadystatechange = procesarPeliculaComments;
+    request2.open('GET', uri, true);
+    request2.send(null);
+
+}
+
+function procesarPeliculaComments() {
+    if (request2.readyState == 4) {
+        if (request2.status == 200) { //exito
+            var cuerpo = request2.responseText;
+            var comments = JSON.parse(cuerpo);
+            mostrarPeliculaComments(comments);
+        } else {
+            console.log("error " + request2.status);
+        }
+    }
+}
+
+
+
+
+
 //*************Local storage****************
 function guardarEnLocalStorage(clave, valor) {
     localStorage.setItem(clave, valor);
 }
 
-function leerSesionDelLocalStorage(clave) {
+function leerDeLocalStorage(clave) {
     return localStorage.getItem(clave);
 }
 

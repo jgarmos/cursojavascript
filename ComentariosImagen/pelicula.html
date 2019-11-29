@@ -1,4 +1,3 @@
-    
 <!DOCTYPE html>
 <html>
 
@@ -13,7 +12,7 @@
 
     <script src="comentarios.js"></script>
     <script>
-    onload = mostrarPeliculaInfo;
+        onload = cargarPeliculaInfo;
     </script>
     <link rel="stylesheet" type="text/css" href="estilos.css">
 
@@ -21,7 +20,7 @@
 <!--Coded with love by Mutiullah Samim-->
 
 <body>
-    
+
     <!------ Include the above in your HEAD tag ---------->
 
     <div class="sidenav">
@@ -35,11 +34,68 @@
     <div class="main">
         <div class="col-md-6 col-sm-12">
             <div id="foto"></div>
-            <div id="comentarios">
-                
-            </div>
 
         </div>
+        <div class="container">
+            <div class="row">
+                <div class="panel panel-default widget">
+                    <div class="panel-heading">
+                        <span class="glyphicon glyphicon-comment"></span>
+                        <h3 class="panel-title">
+                            Comentarios Recientes</h3>
+                        <span id="numeroComentarios" class="label label-info"></span>
+                    </div>
+                    <div class="panel-body">
+                        <ul id="comentarios2" class="list-group">
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-xs-2 col-md-1">
+                                        <img src="http://placehold.it/80" class="img-circle img-responsive" alt="" />
+                                    </div>
+                                    <div class="col-xs-10 col-md-11">
+                                        <div>
+                                            <a href="http://bootsnipp.com/BhaumikPatel/snippets/4ldn">Cool Sign Up</a>
+                                            <div class="mic-info">
+                                                By: <a href="#">Bhaumik Patel</a> on 11 Nov 2013
+                                            </div>
+                                        </div>
+                                        <div class="comment-text">
+                                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy
+                                            nibh
+                                            euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi
+                                            enim
+                                        </div>
+                                        <div class="action">
+                                            <button type="button" class="btn btn-primary btn-xs" title="Edit">
+                                                <span class="glyphicon glyphicon-pencil"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-success btn-xs" title="Approved">
+                                                <span class="glyphicon glyphicon-ok"></span>
+                                            </button>
+                                            <button type="button" class="btn btn-danger btn-xs" title="Delete">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+
+
+                        <div class="form-group">
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                                placeholder="Tu comentario aqui"></textarea>
+                        </div>
+                        <a href="#" onclick="" class="btn btn-primary btn-sm btn-block" role="button"><span
+                                class="glyphicon glyphicon-refresh"></span> Añadir comentario</a>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </body>
 
