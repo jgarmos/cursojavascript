@@ -7,10 +7,19 @@ var fotos;
 class Usuario {
     constructor(nombre, pwd) {
         this.nombre = nombre,
-            this.pwd = pwd
+        this.pwd = pwd
     }
     mostrar() {
         console.log(this.nombre + " " + this.pass);
+    }
+}
+
+class NuevoComentario {
+    constructor(usuario,texto,token,peliculaId ) {
+        this.nombre = nombre,
+        this.pwd = pwd,
+        this.token = token,
+        this.peliculaId
     }
 }
 
@@ -309,6 +318,25 @@ function crearElementoComentario(comentario){
 
 
 
+function addComment(){
+    var texto = document.getElementById("nuevoComentario").innerHTML;
+
+    //cojer usuario y token y peliculaId de localstorage
+    var session = leerDeLocalStorage("session");
+    var sessionObject = JSON.parse(session);
+   
+    var peliId = leerDeLocalStorage("peliculaId");
+    // var peliculaId = JSON.parse(peliId);
+
+    var comentarioNuevo = new NuevoComentario(sessionObject.nombre,texto,sessionObject.token, peliId)
+
+
+    //llamar post
+    llamarApiAddComment(comentarioNuevo);
+
+}
+
+
 //********************************   REDIRECCIONES   *********************************************/
 
 function redireccionarAHomepage() {
@@ -327,6 +355,9 @@ const URISession = "http://10.1.2.10:8081/cfticionic/usuariocftic";
 const URIfotosAPI = "http://10.1.2.10:8081/cfticionic/fotos";
 const URIFOTOAPI =  "http://10.1.2.10:8081/cfticionic/foto"  // http://10.1.2.10:8081/cfticionic/foto?key=CQOYQYTQ3CP3&idfoto=3
 const URICommentsAPI =  "http://10.1.2.10:8081/cfticionic/comentarios/foto" // http://10.1.2.10:8081/cfticionic/comentarios/foto?key=CQOYQYTQ3CP3&idfoto=5
+const URINuevoComentario =  "http://10.1.2.10:8081/cfticionic/comentario"// BODY { "nombre": "alumno10", "texto": "la verdad, me ha gustado aunque el final un poco feo", "token": "CQOYQYTQ3CP3", "idfoto": 5}
+
+
 var request;
 var request2;
 
@@ -435,6 +466,46 @@ function procesarPeliculaInfo() {
             var cuerpo = request.responseText;
             var pelicula = JSON.parse(cuerpo);
             mostrarPeliculaInfo(pelicula);
+        } else {
+            console.log("error " + request.status);
+        }
+    }
+}
+
+
+
+// SERVICIO 4 PUBLICAR UN COMENTARIO (comentarios entre 2 y 400 caracteres)
+// POST http://10.1.2.10:8081/cfticionic/comentario BODY { "nombre": "alumno10", "texto": "la verdad, me ha gustado aunque el final un poco feo", "token": "CQOYQYTQ3CP3", "idfoto": 5}
+
+// RESPUESTA 201 CREADO
+
+// {"nombre":"alumno10","texto":"la verdad, me ha gustado aunque el final un poco feo","idcomentario":66,"fecha":1574598838203}
+
+// Otros códigos de respuesta:
+
+// 400 BAD Request (falta algún parámetro o es incorrecto/fuera de rango) 403 Prohibido (credenciales incorrectas)
+
+
+function llamarApiAddComment(nuevoComentario) {
+    var uri = URINuevoComentario;
+    //cojer sesesion
+
+    request = new XMLHttpRequest();
+    request.onreadystatechange = procesarEventosRecibir;
+    request.open('POST', uri, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.send(JSON.stringify(nuevoComentario));
+}
+function procesarEventosRecibir() {
+    if (request.readyState == 4) {
+        if (request.status == 200) { //login exitoso
+            var cuerpo = request.responseText;
+            var sesion = JSON.parse(cuerpo)
+
+            //Añadir comentario al final (o principio)  
+            
+            redireccionarAHomepage();
+
         } else {
             console.log("error " + request.status);
         }
