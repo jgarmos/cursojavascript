@@ -2,13 +2,6 @@
 // ***************login***********************
 
 
-const URISession = "http://10.1.2.10:8081/cfticionic/usuariocftic";
-const URIfotosAPI = "http://10.1.2.10:8081/cfticionic/fotos";
-const URIFOTOAPI =  "http://10.1.2.10:8081/cfticionic/foto"  // http://10.1.2.10:8081/cfticionic/foto?key=CQOYQYTQ3CP3&idfoto=3
-const URICommentsAPI =  "http://10.1.2.10:8081/cfticionic/comentarios/foto" // http://10.1.2.10:8081/cfticionic/comentarios/foto?key=CQOYQYTQ3CP3&idfoto=5
-
-
-var request;
 var fotos;
 
 class Usuario {
@@ -62,8 +55,6 @@ function peliculaInfo(elemImg){
 
 
 
-
-
 function crearFotos() {
     var fotosDiv = document.getElementById("fotos");
     for (let i = 0; i < fotos.length; i++) {
@@ -92,33 +83,6 @@ function llamarApiComentarios(fotoId){
 
 }
 
-function llamarApiFoto(fotoId){
-    var uri = URIFOTOAPI;
-    //cojer key de session de localstorage
-    var session = leerSesionDelLocalStorage("session");
-    var sessionObject = JSON.parse(session);
-    
-    uri = uri + "?key=" + sessionObject.token + "&idfoto" + fotoId;
-
-    request = new XMLHttpRequest();
-    request.onreadystatechange = procesarPeliculaInfo;
-    request.open('GET', uri, true);
-    request.send(null);
-
-}
-
-function procesarPeliculaInfo() {
-    if (request.readyState == 4) {
-        if (request.status == 200) { //exito
-            var cuerpo = request.responseText;
-            var pelicula = JSON.parse(cuerpo);
-            mostrarPeliculaInfo(pelicula);
-        } else {
-            console.log("error " + request.status);
-        }
-    }
-}
-
 function mostrarPeliculaInfo(pelicula){
     var fotoDiv = document.getElementById("foto");
 
@@ -129,6 +93,75 @@ function mostrarPeliculaInfo(pelicula){
     fotoDiv.appendChild(img);
 }
 
+
+
+
+//***********Redirecciones************** */
+
+function redireccionarAHomepage() {
+    window.location = "homepage.html";
+}
+
+
+function redireccionarAPeliculaPage (){
+    window.location = "pelicula.html";
+
+}
+
+// ********** llamadas a la API **************
+
+const URISession = "http://10.1.2.10:8081/cfticionic/usuariocftic";
+const URIfotosAPI = "http://10.1.2.10:8081/cfticionic/fotos";
+const URIFOTOAPI =  "http://10.1.2.10:8081/cfticionic/foto"  // http://10.1.2.10:8081/cfticionic/foto?key=CQOYQYTQ3CP3&idfoto=3
+const URICommentsAPI =  "http://10.1.2.10:8081/cfticionic/comentarios/foto" // http://10.1.2.10:8081/cfticionic/comentarios/foto?key=CQOYQYTQ3CP3&idfoto=5
+var request;
+
+
+// SERVICIO 1 LOGIN
+// POST http://10.1.2.10:8081/cfticionic/usuariocftic CUERPO {"nombre":"alumno10", "pwd":"alumno10"}
+
+// RESPUESTA 200
+
+// {"nombre":"alumno16","pwd":"alumno16","token":"CQOYQYTQ3CP3"}
+
+// Otros códigos de respuesta:
+
+// 400 Bad Request (errores de validación, petición incorrecta) 500 Internal Server Error (algún problema en la generación del usuario)
+
+function llamarApiSession(usuario) {
+    var uri = URISession;
+    //cojer sesesion
+
+    request = new XMLHttpRequest();
+    request.onreadystatechange = procesarEventosRecibir;
+    request.open('POST', uri, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.send(JSON.stringify(usuario));
+}
+function procesarEventosRecibir() {
+    if (request.readyState == 4) {
+        if (request.status == 200) { //login exitoso
+            var cuerpo = request.responseText;
+            var sesion = JSON.parse(cuerpo)
+
+            //guardar sesion en local estorage
+            guardarEnLocalStorage("session", cuerpo);
+            redireccionarAHomepage();
+
+        } else {
+            console.log("error " + request.status);
+        }
+    }
+}
+
+// SERVICIO 2 OBTENER TODAS LAS FOTOS
+// GET http://10.1.2.10:8081/cfticionic/fotos?key=CQOYQYTQ3CP3
+
+// RESPUESTA 200 OK
+
+// [{"idfoto":0,"ruta":"http://10.1.2.10:8081/cfticionic/fotos/adios.jpg"},{"idfoto":1,"ruta":"http://10.1.2.10:8081/cfticionic/fotos/dinero.jpg"},{"idfoto":2,"ruta":"http://10.1.2.10:8081/cfticionic/fotos/frozen.jpg"},{"idfoto":3,"ruta":"http://10.1.2.10:8081/cfticionic/fotos/gigolo.jpg"},{"idfoto":4,"ruta":"http://10.1.2.10:8081/cfticionic/fotos/joker.jpg"},{"idfoto":5,"ruta":"http://10.1.2.10:8081/cfticionic/fotos/ladronas.jpg"},{"idfoto":6,"ruta":"http://10.1.2.10:8081/cfticionic/fotos/lluvia.jpg"},{"idfoto":7,"ruta":"http://10.1.2.10:8081/cfticionic/fotos/malefica.jpg"},{"idfoto":8,"ruta":"http://10.1.2.10:8081/cfticionic/fotos/rico.jpg"},{"idfoto":9,"ruta":"http://10.1.2.10:8081/cfticionic/fotos/terminator.jpg"}]
+
+// Otros códigos de respuesta: 403 Prohibido (clave ausente o incorrecta)
 
 function llamarApiFotos() {
     var uri = URIfotosAPI;
@@ -157,41 +190,43 @@ function procesarFotosResponse() {
     }
 }
 
-function llamarApiSession(usuario) {
-    var uri = URISession;
-    //cojer sesesion
+// SERVICIO 3 OBTENER INFORMACIÓN DE UNA FOTO
+// GET http://10.1.2.10:8081/cfticionic/foto?key=CQOYQYTQ3CP3&idfoto=3
+
+// RESPUESTA 200 OK {"idfoto":3,"ruta":"http://10.1.2.10:8081/cfticionic/fotos/frozen.jpg"}
+
+// Otros códigos de respuesta:
+
+// 400 BAD Request (el id de la foto está fuera de rango) 403 Prohibido (La credencial key no es válida)
+
+
+function llamarApiFoto(fotoId){
+    var uri = URIFOTOAPI;
+    //cojer key de session de localstorage
+    var session = leerSesionDelLocalStorage("session");
+    var sessionObject = JSON.parse(session);
+    
+    uri = uri + "?key=" + sessionObject.token + "&idfoto" + fotoId;
 
     request = new XMLHttpRequest();
-    request.onreadystatechange = procesarEventosRecibir;
-    request.open('POST', uri, true);
-    request.setRequestHeader("Content-Type", "application/json");
-    request.send(JSON.stringify(usuario));
+    request.onreadystatechange = procesarPeliculaInfo;
+    request.open('GET', uri, true);
+    request.send(null);
+
 }
-function procesarEventosRecibir() {
+
+function procesarPeliculaInfo() {
     if (request.readyState == 4) {
-        if (request.status == 200) { //login exitoso
+        if (request.status == 200) { //exito
             var cuerpo = request.responseText;
-            var sesion = JSON.parse(cuerpo)
-
-            //guardar sesion en local estorage
-            guardarEnLocalStorage("session", cuerpo);
-            redireccionarAHomepage();
-
+            var pelicula = JSON.parse(cuerpo);
+            mostrarPeliculaInfo(pelicula);
         } else {
             console.log("error " + request.status);
         }
     }
 }
 
-function redireccionarAHomepage() {
-    window.location = "homepage.html";
-}
-
-
-function redireccionarAPeliculaPage (){
-    window.location = "pelicula.html";
-
-}
 
 //*************Local storage****************
 function guardarEnLocalStorage(clave, valor) {
