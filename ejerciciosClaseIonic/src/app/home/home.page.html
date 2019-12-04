@@ -10,16 +10,17 @@
   <ion-item-group>
 
     <ion-item>
-      <ion-label>Peso (en kg)</ion-label>
-      <ion-input [(ngModel)]="peso"></ion-input>
+      <ion-label>Peso (en kg):</ion-label>
+      <ion-input [(ngModel)]="imc.peso"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label>Altura (en metros)</ion-label>
-      <ion-input [(ngModel)]="altura"></ion-input>
+      <ion-label>Altura (en metros):</ion-label>
+      <ion-input [(ngModel)]="imc.altura"></ion-input>
     </ion-item>
 
     <ion-button (click)="calcularIMC()">Calcular IMC</ion-button>
+    <ion-button (click)="limpiar()">limpiar</ion-button>
 
   </ion-item-group>
 
@@ -42,22 +43,22 @@
         <ion-textarea>Imagen</ion-textarea>
       </ion-col>
     </ion-list-header>
-
-    <ion-row *ngIf="imcIndex">
+<!-- //*ngIf="imc.imcIndex" -->
+    <ion-row *ngFor="let item of arrayImc"  > 
       <ion-col>
-        <ion-textarea>{{peso}}</ion-textarea>
+        <ion-textarea>{{item.peso}}</ion-textarea>
       </ion-col>
       <ion-col>
-        <ion-textarea>{{altura}}</ion-textarea>
+        <ion-textarea>{{item.altura}}</ion-textarea>
       </ion-col>
       <ion-col>
-        <ion-textarea>{{imcIndex}}</ion-textarea>
+        <ion-textarea>{{item.imcIndex}}</ion-textarea>
       </ion-col>
       <ion-col>
-        <ion-textarea>{{imcDescriptivo}}</ion-textarea>
+        <ion-textarea>{{item.imcDescriptivo}}</ion-textarea>
       </ion-col>
       <ion-col>
-        <ion-img src="{{imagenSrc}}"></ion-img>
+        <ion-img src="{{item.imgSrc}}"></ion-img>
       </ion-col>
     </ion-row>
   </ion-grid>

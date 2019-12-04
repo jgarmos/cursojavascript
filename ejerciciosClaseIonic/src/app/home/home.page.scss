@@ -1,1 +1,43 @@
 
+
+
+// ion-row{
+//     border-style: solid;
+//     text-align :center;
+    
+// }
+
+// ion-col{
+//     background: gray;
+//     border: think solid black;
+//     text-align :center;
+//     }
+
+// ion-img{
+//     width: 10px; height: 10px;
+// }
+// ion-textarea{
+//     background-color: aqua;
+// }
+
+// ion-list-header{
+//     background-color: blue;
+// }
+
+ion-img {
+    width: 30px;
+    height: 50px;
+    object-fit:cover;
+    margin: 0 auto;
+}
+
+ion-col {
+    text-align: center;
+}
+ion-row {
+    border-style: solid;
+}
+
+ion-list-header {
+    --background: #42A948;
+}
