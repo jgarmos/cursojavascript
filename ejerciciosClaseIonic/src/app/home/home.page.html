@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Calculadora IMC
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item-group>
+
+    <ion-item>
+      <ion-label>Peso (en kg)</ion-label>
+      <ion-input [(ngModel)]="peso"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Altura (en metros)</ion-label>
+      <ion-input [(ngModel)]="altura"></ion-input>
+    </ion-item>
+
+    <ion-button (click)="calcularIMC()">Calcular IMC</ion-button>
+
+  </ion-item-group>
+
+  <ion-grid>
+
+    <ion-list-header>
+      <ion-col>
+        <ion-textarea>Peso</ion-textarea>
+      </ion-col>
+      <ion-col>
+        <ion-textarea>Altura</ion-textarea>
+      </ion-col>
+      <ion-col>
+        <ion-textarea>IMC index</ion-textarea>
+      </ion-col>
+      <ion-col>
+        <ion-textarea>Imc descriptivo</ion-textarea>
+      </ion-col>
+      <ion-col>
+        <ion-textarea>Imagen</ion-textarea>
+      </ion-col>
+    </ion-list-header>
+
+    <ion-row *ngIf="imcIndex">
+      <ion-col>
+        <ion-textarea>{{peso}}</ion-textarea>
+      </ion-col>
+      <ion-col>
+        <ion-textarea>{{altura}}</ion-textarea>
+      </ion-col>
+      <ion-col>
+        <ion-textarea>{{imcIndex}}</ion-textarea>
+      </ion-col>
+      <ion-col>
+        <ion-textarea>{{imcDescriptivo}}</ion-textarea>
+      </ion-col>
+      <ion-col>
+        <ion-img src="{{imagenSrc}}"></ion-img>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
+
+</ion-content>
