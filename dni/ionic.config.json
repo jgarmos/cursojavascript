@@ -1,0 +1,7 @@
+{
+  "name": "dni",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

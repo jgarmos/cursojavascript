@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Calculadora Letra DNI
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    
+    <ion-item>
+      <ion-label position="stacked">DNI</ion-label>
+      <ion-input placeholder="Introduzca su dni aqui" [(ngModel)]="numeroDni"></ion-input> 
+    </ion-item>
+    <!-- <ion-button type="number" shape="round" color="primary" (click)="calcularLetra()">Calcular letra</ion-button> -->
+    <ion-card>
+      <ion-card-content>
+        La letra de su dni es: {{ calcularLetra() }}
+      </ion-card-content>
+    </ion-card>
+    <ion-button routerLink="/imc" routerDirection="root">Ir a IMC </ion-button>     
+
+
+
+  </div>
+</ion-content>
+
+
+<!-- <ion-card *ngIf="mayorMenor==''">
+  <ion-card-header>
+    ¡¡¡Enhorabuena!!! {{nombre}}
+  </ion-card-header>
+  <ion-card-content>
+    Has acertado, el número secreto es el {{ num }}
+  </ion-card-content>
+</ion-card>     
+<ion-button *ngIf="mayorMenor!='' && !finJuego" expand="block" (click)="compruebaNumero()">Adivina</ion-button> -->
+<!-- 
+<ion-content>
+  <div class="ion-padding">
+    <IonItem>
+      <IonLabel>Dni</IonLabel>
+      <IonInput placeholder="Introduzca su dni aqui"></IonInput>
+      <ion-button shape="round" color="primary">Calcular letra</ion-button>
+    </IonItem>
+  </div>
+</ion-content> -->
