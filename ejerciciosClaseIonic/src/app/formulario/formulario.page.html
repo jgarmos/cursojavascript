@@ -1,0 +1,80 @@
+
+<ion-header>
+    <ion-toolbar>
+      <ion-title>formulario</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+  <!--AQUÍ VA EL FORMULARIO-->
+  <ion-card>
+      <form #formulario_login="ngForm" (ngSubmit)="acceder(formulario_login.value)">
+          <ion-item>
+            <ion-label>Nombre</ion-label>
+            <ion-input type="text" name="nombre" #nombre="ngModel" required pattern=".{4,}" [(ngModel)]="login.nombre"></ion-input>
+            <small [hidden]="!(!nombre.valid && formulario_login.submitted)">Nombre al menos de 4 letras</small>
+          </ion-item>
+          <ion-item>
+            <ion-label>Pwd</ion-label>
+            <ion-input type="password" name="pwd" #pwd="ngModel" [(ngModel)]="login.pwd"></ion-input>
+          </ion-item>
+          <ion-button type="submit" shape="round" [disabled]=!(formulario_login.valid) (click)="acceder()" >Acceder</ion-button>
+        </form>
+  </ion-card>
+  
+  </ion-content>
+
+<!-- <ion-content>
+  <form>
+    <ion-card>
+      <ion-item-group>
+        <ion-item>
+          <ion-icon name="person"></ion-icon>
+          <ion-label>Usuario:</ion-label>
+
+          <ion-input [(ngModel)]="login.usuario"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-icon name="key"></ion-icon>
+          <ion-label>Password</ion-label>
+          <ion-input type="password"></ion-input>
+        </ion-item>
+        <ion-button type="submit">
+          Logueate
+        </ion-button>
+
+      </ion-item-group>
+
+    </ion-card>
+
+
+  </form>
+</ion-content> -->
+
+  
+<!--   
+
+<ion-content>
+  <form #formulario_login="ngForm" (ngSubmit)="acceder(formulario_login.value)" >
+    <ion-card>
+      <ion-item-group>
+        <ion-item>
+          <ion-icon name="person"></ion-icon>
+          <ion-label>Usuario:</ion-label>
+          <ion-input type="text" name="nombre" #nombre="ngModel" [(ngModel)]="login.usuario"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="key"></ion-icon>
+          <ion-label>Password:</ion-label>
+          <ion-input name="password" type="password" #password="ngModel" [(ngModel)]="login.password"></ion-input>
+        </ion-item>
+        <ion-button type="submit">
+          Acceder
+        </ion-button>
+
+      </ion-item-group>
+
+    </ion-card>
+  </form>> 
+</ion-content> -->

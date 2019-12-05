@@ -1,5 +1,6 @@
 import { IMC } from './IMC';
 import { Component } from '@angular/core';
+import { runInThisContext } from 'vm';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +25,7 @@ export class HomePage {
   
     let imcAux = new IMC();
     imcAux.peso = this.imc.peso;
-    imcAux.altura = this.imc.peso;
+    imcAux.altura = this.imc.altura;
 
     imcAux.imcIndex = ((Math.round(this.imc.peso / Math.pow(this.imc.altura, 2) * 10) / 10)); //redondea a un decimal
 
@@ -41,6 +42,33 @@ export class HomePage {
     console.log("IMC: " + imcAux.imcIndex);
     console.log("texto: " + imcAux.imcDescriptivo);
     console.log("src: " + imcAux.imgSrc);
+  }
+
+  // public ordenarPorPeso(){
+  //   this.arrayImc.sort(function(a,b){
+  //     return (a.peso - b.peso)
+  //   });
+  // }
+
+  // public ordenarPorAltura(){
+  //   this.arrayImc.sort(function(a,b){
+  //     return (a.altura - b.altura)
+  //   });
+  // }
+  // public ordenarPorIndex(){
+  //   this.arrayImc.sort(function(a,b){
+  //     return (a.imcIndex - b.imcIndex)
+  //   });
+  // }
+  public ordenarPorPeso(){
+    this.arrayImc.sort( (a,b) => a.peso - b.peso );
+  }
+
+  public ordenarPorAltura(){
+    this.arrayImc.sort( (a,b) => a.altura - b.altura );
+  }
+  public ordenarPorIndex() {
+    this.arrayImc.sort( (a,b) => a.imcIndex - b.imcIndex );
   }
 
   private calcularIMCdescriptivo(imcIndex:number):string {
@@ -72,5 +100,8 @@ export class HomePage {
     } else src = "https://tstoaddicts.files.wordpress.com/2015/11/kingsizehomervictory.png";
     return src;
   }
+
+
+
 }
 
