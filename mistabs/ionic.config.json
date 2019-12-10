@@ -1,0 +1,7 @@
+{
+  "name": "mistabs",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

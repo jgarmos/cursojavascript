@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Calculadora Letra DNI
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    
+    <ion-item>
+      <ion-label position="stacked">DNI</ion-label>
+      <ion-input placeholder="Introduzca su dni aqui" [(ngModel)]="numeroDni"></ion-input> 
+    </ion-item>
+    <!-- <ion-button type="number" shape="round" color="primary" (click)="calcularLetra()">Calcular letra</ion-button> -->
+    <ion-card>
+      <ion-card-content>
+        La letra de su dni es: {{ calcularLetra() }}
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+</ion-content>

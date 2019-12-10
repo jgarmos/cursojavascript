@@ -1,0 +1,90 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Calculadora IMC
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item-group>
+
+    <ion-item>
+      <ion-label>Peso (en kg):</ion-label>
+      <ion-input [(ngModel)]="imc.peso"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Altura (en metros):</ion-label>
+      <ion-input [(ngModel)]="imc.altura"></ion-input>
+    </ion-item>
+
+    <ion-button (click)="calcularIMC()">Calcular IMC</ion-button>
+    <ion-button (click)="limpiar()">limpiar</ion-button>
+    <ion-button (click)="ordenarPorPeso()">ordenar por peso</ion-button>
+    <ion-button (click)="ordenarPorAltura()">ordenar por altura</ion-button>
+    <ion-button (click)="ordenarPorIndex()">ordenar por index</ion-button>
+
+
+  </ion-item-group>
+
+  <ion-grid>
+
+    <ion-list-header>
+      <ion-col>
+        <ion-textarea>
+          Peso
+          <ion-icon name="ios-arrow-down"></ion-icon>
+        </ion-textarea>
+      </ion-col>
+      <ion-col>
+        <ion-textarea>
+          Altura
+          <ion-icon name="ios-arrow-down"></ion-icon>
+        </ion-textarea>
+      </ion-col>
+      <ion-col>
+        <ion-textarea>
+          IMC index
+          <a>
+           <ion-icon name="ios-arrow-down"></ion-icon> 
+          </a>
+          
+
+
+        </ion-textarea>
+      </ion-col>
+      <ion-col>
+        <ion-textarea>
+          Imc descriptivo
+          <button item-right clear>
+            <ion-icon name="ios-arrow-down"></ion-icon>
+          </button>
+
+        </ion-textarea>
+      </ion-col>
+      <ion-col>
+        <ion-textarea>
+          Imagen
+        </ion-textarea>
+      </ion-col>
+    </ion-list-header>
+    <!-- //*ngIf="imc.imcIndex" -->
+    <ion-row *ngFor="let item of arrayImc">
+      <ion-col>
+        <ion-textarea>{{item.peso}}</ion-textarea>
+      </ion-col>
+      <ion-col>
+        <ion-textarea>{{item.altura}}</ion-textarea>
+      </ion-col>
+      <ion-col>
+        <ion-textarea>{{item.imcIndex}}</ion-textarea>
+      </ion-col>
+      <ion-col>
+        <ion-textarea>{{item.imcDescriptivo}}</ion-textarea>
+      </ion-col>
+      <ion-col>
+        <ion-img src="{{item.imgSrc}}"></ion-img>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
