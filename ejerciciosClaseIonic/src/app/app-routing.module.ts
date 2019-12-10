@@ -12,6 +12,10 @@ const routes: Routes = [
     path: 'formulario',
     loadChildren: () => import('./formulario/formulario.module').then( m => m.FormularioPageModule)
   },
+  {
+    path: 'listapelis',
+    loadChildren: () => import('./listapelis/listapelis.module').then( m => m.ListapelisPageModule)
+  },
 ];
 
 @NgModule({

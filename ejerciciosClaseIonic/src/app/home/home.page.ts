@@ -1,6 +1,6 @@
 import { IMC } from './IMC';
 import { Component } from '@angular/core';
-import { runInThisContext } from 'vm';
+// import { runInThisContext } from 'vm';
 
 @Component({
   selector: 'app-home',
