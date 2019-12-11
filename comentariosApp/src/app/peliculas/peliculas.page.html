@@ -1,0 +1,13 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>peliculas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-slides class="image-slider" loop="true" slidesPerView="2">
+    <ion-slide *ngFor="let pelicula of listaPeliculas">
+      <img src="pelicula.fotoSrc" class="thumb-img" imageViewer/>
+    </ion-slide>
+  </ion-slides>
+</ion-content>
