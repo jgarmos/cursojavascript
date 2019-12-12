@@ -1,11 +1,20 @@
-ion-slide.swiper-slide {
-    left: 25%;
-}
+// ion-slide.swiper-slide {
+//     left: 25%;
+// }
 
-.slide-zoom {
-    background: #e6e6e6;
-}
+// .slide-zoom {
+//     background: #e6e6e6;
+// }
 
-.thumb-img {
-    padding: 10px;
+// .thumb-img {
+//     padding: 10px;
+// }
+
+ion-slides { height: auto; }
+
+h3 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

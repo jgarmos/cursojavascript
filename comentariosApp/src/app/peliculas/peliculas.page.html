@@ -5,9 +5,18 @@
 </ion-header>
 
 <ion-content>
-  <ion-slides class="image-slider" loop="true" slidesPerView="2">
-    <ion-slide *ngFor="let pelicula of listaPeliculas">
-      <img src="pelicula.fotoSrc" class="thumb-img" imageViewer/>
+  <!-- <ion-slides class="image-slider" loop="true" slidesPerView="2">
+    <ion-slide effect="cube" *ngFor="let pelicula of listaPeliculas">
+      <img src="{{pelicula.ruta}}" class="thumb-img" imageViewer/>
     </ion-slide>
-  </ion-slides>
+  </ion-slides> -->
+  <div *ngIf="listaPeliculas">
+    <ion-slides effect="flip" pager="true" paginationType="bullets" loop="true" slidesPerView="2" style="background-color:white">
+      <ion-slide *ngFor="let peli of listaPeliculas" style="background-color:white">
+        <h3>{{peli.idfoto}}</h3>
+        <img data-src="{{peli.ruta}}" (click)="peliTocada(peli)">
+        <br>
+      </ion-slide>
+    </ion-slides>
+  </div>
 </ion-content>

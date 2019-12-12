@@ -1,3 +1,4 @@
+import { NavController } from '@ionic/angular';
 import { HttpResponse } from '@angular/common/http';
 import { PeliculasService } from './../services/peliculas.service';
 import { Component, OnInit } from '@angular/core';
@@ -16,8 +17,8 @@ export class PeliculasPage implements OnInit {
   listaPeliculas: Array<Pelicula>;
   sessionToken:string;
 
-  constructor(private peliculasService:PeliculasService) { 
-    //this.listaPeliculas = new Array<Pelicula>();
+  constructor(private peliculasService:PeliculasService, private nc:NavController) { 
+    this.listaPeliculas = new Array<Pelicula>();
     this.sessionToken = this.leerTokenDeLocalStorage();
     this.listarPeliculas();
     
@@ -30,8 +31,20 @@ export class PeliculasPage implements OnInit {
         let httpresp = resp as HttpResponse<Array<Pelicula>>;
         this.listaPeliculas = httpresp.body;
 
+        this.listaPeliculas.map( peli => {
+          console.log(peli.idfoto)
+        } );
+
         console.log(this.listaPeliculas);
+      },
+      error => {
+        console.log("error")
       });
+  }
+
+  peliTocada(pelicula:Pelicula){
+    localStorage.setItem("peliSeleccionada", pelicula.idfoto.toString());
+    this.nc.navigateForward("comentarios"); 
   }
 
 

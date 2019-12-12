@@ -1,7 +1,6 @@
 export class Pelicula {
     idfoto:number;
     ruta:string;
-    fotoSrc:string;    
     
     constructor(){};
 

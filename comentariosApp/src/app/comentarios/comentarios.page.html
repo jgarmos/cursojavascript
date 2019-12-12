@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="peliculas"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Comentarios</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    
+    
+    <ion-item>
+      <ion-label position="stacked">Nuevo Comentario</ion-label>
+      <ion-input placeHolder="escribe tu nuevo comenaterio aqui" [ngModel]="textoComentario">
+        
+      </ion-input>
+      <ion-button (click)="addCommentario()">
+        <ion-icon slot="start" name="add-circle" ></ion-icon>
+        Añadir  
+      </ion-button>
+    </ion-item>
+    <ion-list-header>  
+      Ultimos Comentarios
+    </ion-list-header>
+
+    
+
+    <ion-item *ngFor="let comentario of comentarios">
+      <ion-avatar slot="start">
+        <img src="https://pbs.twimg.com/profile_images/1117465711893524481/H0wUxky0_400x400.jpg">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{comentario.autor}}</h2>
+        <h3>{{mostrarFechaFormateada(comentario.momento)}}</h3>
+        <p>{{comentario.texto}}</p>
+      </ion-label>
+      
+    </ion-item>
+
+  </ion-list>
+
+
+</ion-content>
