@@ -1,5 +1,7 @@
 {
   "name": "comentariosApp",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
