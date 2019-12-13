@@ -28,6 +28,8 @@ export class PeliculasService {
       (dir_serv, str_login, { headers: headers, observe: "response" });
   }
 
+// BODY { "nombre": "alumno10", "texto": "la verdad, me ha gustado aunque el final un poco feo", "token": "CQOYQYTQ3CP3", "idfoto": 5}
+
   postComentario(comentario:NuevoComentario): Observable<object> {
     let dir_serv: string = PeliculasService.SERVICIO_POST_COMENTARIOS;
     let str_comentario: string = JSON.stringify(comentario);//Serializar

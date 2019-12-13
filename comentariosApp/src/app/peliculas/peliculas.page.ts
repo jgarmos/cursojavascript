@@ -1,10 +1,10 @@
-import { NavController } from '@ionic/angular';
+import { SlideOptions } from './slide-options';
+import { NavController, LoadingController } from '@ionic/angular';
 import { HttpResponse } from '@angular/common/http';
 import { PeliculasService } from './../services/peliculas.service';
 import { Component, OnInit } from '@angular/core';
 import { Pelicula } from './pelicula';
 import { Login } from '../login/login';
-import { Foto } from './foto';
 
 @Component({
   selector: 'app-peliculas',
@@ -17,17 +17,25 @@ export class PeliculasPage implements OnInit {
   listaPeliculas: Array<Pelicula>;
   sessionToken:string;
 
-  constructor(private peliculasService:PeliculasService, private nc:NavController) { 
+  slideOptions:SlideOptions;
+
+  constructor(private peliculasService:PeliculasService, private nc:NavController, private loadingController:LoadingController) { 
+    this.slideOptions = new SlideOptions();
+    
     this.listaPeliculas = new Array<Pelicula>();
     this.sessionToken = this.leerTokenDeLocalStorage();
+    this.presentLoading();
     this.listarPeliculas();
+
     
+
   }
 
   listarPeliculas(){
     this.peliculasService.getPeliculas(this.sessionToken).subscribe(
       resp => { 
         // let listaObjetosResp = resp as Array<object>
+        
         let httpresp = resp as HttpResponse<Array<Pelicula>>;
         this.listaPeliculas = httpresp.body;
 
@@ -55,6 +63,20 @@ export class PeliculasPage implements OnInit {
     return login.token;
 
   }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      message: 'Hellooo',
+      duration: 2000
+    });
+    await loading.present();
+
+    const { role, data } = await loading.onDidDismiss();
+
+    console.log('Loading dismissed!');
+  }
+
+
   ngOnInit() {
   }
 

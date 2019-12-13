@@ -19,7 +19,7 @@ export class ComentariosPage implements OnInit {
 
   constructor(private peliculasService:PeliculasService) {
 
-    this.listarComentarios();
+    
    }
 
    addCommentario(){
@@ -27,6 +27,9 @@ export class ComentariosPage implements OnInit {
       let nuevoComentario = new NuevoComentario();
       nuevoComentario.texto = this.textoComentario;
       nuevoComentario.token = this.leerTokenDeLocalStorage();
+      nuevoComentario.idfoto = this.leerPeliSeleccionadaDeLocalStorage(); 
+      nuevoComentario.nombre = this.leerNombreDeLocalStorage();
+
 
       this.peliculasService.postComentario(nuevoComentario).subscribe(
         resp => {
@@ -67,6 +70,13 @@ export class ComentariosPage implements OnInit {
     console.log(login);
     return login.token;
   }
+  leerNombreDeLocalStorage():string{
+    let login:Login = JSON.parse( localStorage.getItem("credenciales"));  
+    console.log(login);
+    return login.nombre;
+  }
+
+
   leerPeliSeleccionadaDeLocalStorage():number{
     let peliId:number = JSON.parse( localStorage.getItem("peliSeleccionada"));  
 
@@ -74,6 +84,12 @@ export class ComentariosPage implements OnInit {
   }
 
   ngOnInit() {
+    this.listarComentarios();
+  }
+
+  ionViewDidLoad(){
+    window.setInterval(this.listarComentarios, 500);
+   
   }
 
 }

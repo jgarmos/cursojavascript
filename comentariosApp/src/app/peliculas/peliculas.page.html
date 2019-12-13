@@ -5,18 +5,18 @@
 </ion-header>
 
 <ion-content>
-  <!-- <ion-slides class="image-slider" loop="true" slidesPerView="2">
-    <ion-slide effect="cube" *ngFor="let pelicula of listaPeliculas">
-      <img src="{{pelicula.ruta}}" class="thumb-img" imageViewer/>
-    </ion-slide>
-  </ion-slides> -->
+
   <div *ngIf="listaPeliculas">
-    <ion-slides effect="flip" pager="true" paginationType="bullets" loop="true" slidesPerView="2" style="background-color:white">
+    <!-- <h3>{{peli.titulo}}</h3> -->
+    <ion-slides [options] ="slideOptions.opcionesCarrusel" pager="true" paginationType="bullets" loop="true"  style="background-color:white">
       <ion-slide *ngFor="let peli of listaPeliculas" style="background-color:white">
         <h3>{{peli.idfoto}}</h3>
         <img data-src="{{peli.ruta}}" (click)="peliTocada(peli)">
         <br>
+        <h3>{{peli.titulo}}</h3>
       </ion-slide>
     </ion-slides>
+    <!-- <h3>{{peliSeleccionada.titulo}}</h3> -->
   </div>
+  
 </ion-content>
